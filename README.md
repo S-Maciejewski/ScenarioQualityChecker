@@ -35,5 +35,7 @@ Aktor systemowy: System
 - Bibliotekarz zatwierdza dodanie książki.
 - System informuje o poprawnym dodaniu książki.
 
+[Link Text](https://docs.google.com/spreadsheets/d/e/2PACX-1vSxEKEBzcopOqfu9OHFwQkD2oDQlztfqAW0Tf_IXjElZQyKDUrzl4-oxI78NQEHZaLh1Vorl2RSyEf3/pubhtml "Punktowanie sprintów")
+
 
 
