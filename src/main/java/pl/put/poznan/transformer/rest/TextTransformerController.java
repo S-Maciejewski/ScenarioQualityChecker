@@ -6,7 +6,6 @@ import pl.put.poznan.transformer.logic.TextTransformer;
 
 import java.util.Arrays;
 
-
 @RestController
 @RequestMapping("/{text}")
 public class TextTransformerController {
