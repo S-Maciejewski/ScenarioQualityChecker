@@ -14,30 +14,28 @@ public class Step {
     }
     
     public void startsWithActor(List<Step> wrongSteps, List<String> actors, List<String> systemActors) {
-        Boolean correct = false;
-        String[] keyWords = {"FOR EACH:", "IF:", "ELSE:"};
-        for (String keyWord : keyWords) {
-            description = description.replaceAll(keyWord, "");
-        }
-        description = description.trim();
-        if(actors != null){
-            for (String actor : actors) {
-                if(description.startsWith(actor)) {
-                    correct = true;
-                    break;
+        if(!(description.startsWith("ELSE:") || description.startsWith("FOR EACH:"))) {
+            description = (description.replaceAll("IF:", "")).trim();
+            Boolean correct = false;
+            if(actors != null){
+                for (String actor : actors) {
+                    if(description.startsWith(actor)) {
+                        correct = true;
+                        break;
+                    }
                 }
             }
-        }
-        if(!correct && systemActors != null){
-            for (String systemActor : systemActors) {
-                if(description.startsWith(systemActor)) {
-                    correct = true;
-                    break;
+            if(!correct && systemActors != null){
+                for (String systemActor : systemActors) {
+                    if(description.startsWith(systemActor)) {
+                        correct = true;
+                        break;
+                    }
                 }
             }
-        }
-        if(!correct){
-            wrongSteps.add(this);
+            if(!correct){
+                wrongSteps.add(this);
+            }
         }
         checkSubstepsSWA(wrongSteps, actors, systemActors);
     }
