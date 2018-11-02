@@ -1,26 +1,49 @@
 package pl.put.poznan.transformer.logic;
+import java.util.Collections;
 import net.minidev.json.JSONObject;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Scenario {
 
     private JSONObject scenario;
 
     private String title;
-    private ArrayList<String> actors;
-    private ArrayList<String> systemActors;
+    private List<String> actors;
+    private List<String> systemActors;
 
-    private ArrayList<Step> steps;
+    private List<Step> steps;
 
     public Scenario(JSONObject sendscenario){
 
         this.scenario = sendscenario;
         this.title = sendscenario.getAsString("title");
-        this.actors = (ArrayList<String>) sendscenario.get("actors");
-        this.systemActors = (ArrayList<String>) sendscenario.get("system_actors");
+        this.actors = (List<String>) sendscenario.get("actors");
+        this.systemActors = (List<String>) sendscenario.get("system_actors");
 
         //TODO parsowanie scenariusza, wyodrębnienie poszczególnych kroków do klasy Step
 
+    }
+    
+    public List<Step> missingActorSteps()
+    {
+        List<Step> wrongSteps = Collections.<Step>emptyList();
+        if(steps != null){
+            for (Step step : steps) {
+                step.startsWithActor(wrongSteps, actors, systemActors);
+            }
+        }
+        return wrongSteps;
+    }
+    
+    public int countSteps() {
+        AtomicInteger stepsCounter = new AtomicInteger(0);
+        if (steps != null) {
+            for (Step step : steps) {
+                step.countSteps(stepsCounter);
+            }
+        }
+        return stepsCounter.intValue();
     }
 
     public JSONObject getScenario() {
@@ -29,13 +52,13 @@ public class Scenario {
     public String getTitle() {
         return title;
     }
-    public ArrayList<String> getActors() {
+    public List<String> getActors() {
         return actors;
     }
-    public ArrayList<String> getSystemActors() {
+    public List<String> getSystemActors() {
         return systemActors;
     }
-    public ArrayList<Step> getSteps() {
+    public List<Step> getSteps() {
         return steps;
     }
 
