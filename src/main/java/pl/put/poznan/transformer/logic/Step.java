@@ -67,7 +67,7 @@ public class Step {
                     step.countKeyWordSteps(stepsCounter);
             }
         }
-        if(description.startsWith("ELSE:") || description.startsWith("FOR EACH:") || description.startsWith("IF:")) {
+        if(description.startsWith("ELSE:") || description.startsWith("FOR EACH") || description.startsWith("IF:")) {
             stepsCounter.addAndGet(1);
         }
     }
