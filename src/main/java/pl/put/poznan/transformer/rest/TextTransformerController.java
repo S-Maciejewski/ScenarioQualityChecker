@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.transformer.logic.Scenario;
+import pl.put.poznan.transformer.logic.Step;
 
 @RestController
 @RequestMapping("/{function}")

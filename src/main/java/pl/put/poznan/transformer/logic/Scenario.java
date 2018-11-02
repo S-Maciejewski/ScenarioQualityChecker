@@ -1,10 +1,6 @@
 package pl.put.poznan.transformer.logic;
-import java.lang.reflect.Array;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 import net.minidev.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,19 +15,13 @@ public class Scenario {
 
     private List<Step> steps;
 
-    public Scenario(JSONObject sendscenario){
+    public Scenario(JSONObject sendscenario) {
 
         this.scenario = sendscenario;
         this.title = sendscenario.getAsString("title");
         this.actors = readJson("actors");
         this.systemActors = readJson("system_actors");
         this.steps = readJsonSteps();
-
-        for (Step s: this.steps) {
-            s.showRecursively("");
-        }
-        //TODO parsowanie scenariusza
-
     }
 
     private List<String> readJson(String field) {
@@ -52,7 +42,7 @@ public class Scenario {
         Object stepsAsObject = this.scenario.get("steps");
         List<Object> stepsAsObjectsList = new ArrayList<>();
         if (stepsAsObject instanceof ArrayList)
-             Collections.addAll(stepsAsObjectsList, stepsAsObject);
+             stepsAsObjectsList.addAll((ArrayList)stepsAsObject);
         return recursiveStepsReader(stepsAsObjectsList);
     }
 
@@ -68,7 +58,7 @@ public class Scenario {
                     } else if (steps.get(i + 1) instanceof ArrayList) {
                         List<Object> substepsAsObjectList = new ArrayList<>();
                         if (steps.get(i + 1) instanceof ArrayList)
-                            Collections.addAll(substepsAsObjectList, steps.get(i+1));
+                            substepsAsObjectList.addAll((ArrayList)steps.get(i+1));
                         List<Step> substeps = recursiveStepsReader(substepsAsObjectList);
                         steplist.add(new Step((String) steps.get(i), substeps));
                     }
@@ -79,7 +69,7 @@ public class Scenario {
     }
     
     public List<Step> missingActorSteps() {
-        List<Step> wrongSteps = Collections.<Step>emptyList();
+        List<Step> wrongSteps = new ArrayList<>();
         if(steps != null){
             for (Step step : steps) {
                 step.startsWithActor(wrongSteps, actors, systemActors);
@@ -116,7 +106,12 @@ public class Scenario {
 
     public JSONObject triggerFunction(String function) {
 
-        //TODO implementacja funkcji zwracających odpowiednie rzeczy
+        switch (function) {
+            case "wrongSteps":
+                break;
+            default:
+                break;
+        }
         return scenario;
     }
 
