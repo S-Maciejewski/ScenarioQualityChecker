@@ -1,6 +1,8 @@
 package pl.put.poznan.transformer.logic;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -115,14 +117,27 @@ public class Scenario {
     }
 
     public JSONObject triggerFunction(String function) {
-
+        JSONObject response = new JSONObject();
         switch (function) {
             case "wrongSteps":
+                JSONArray wrongStepsJSON = new JSONArray();
+                for (Step s: missingActorSteps()){
+                    wrongStepsJSON.add(s.getDescription());
+                }
+                response.put("wrongSteps", wrongStepsJSON);
                 break;
+            case "countSteps":
+                response.put("stepsNumber", countSteps());
+                break;
+            case "countKeyWordSteps":
+                response.put("keywordStepsNumber", countKeyWordSteps());
+                break;
+            case "showScenario":
+                response.put()
             default:
                 break;
         }
-        return scenario;
+        return response;
     }
 
 

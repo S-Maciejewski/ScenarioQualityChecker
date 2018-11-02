@@ -12,7 +12,11 @@ public class Step {
         this.substeps = substeps;
         this.description = description;
     }
-    
+
+    public String getDescription() {
+        return description;
+    }
+
     public void startsWithActor(List<Step> wrongSteps, List<String> actors, List<String> systemActors) {
         if(!(description.startsWith("ELSE:") || description.startsWith("FOR EACH:"))) {
             description = (description.replaceAll("IF:", "")).trim();
