@@ -1,5 +1,7 @@
 # Scenario Quality Checker 
 
+[![Build Status](https://travis-ci.org/jantechner/ScenarioQualityChecker.svg?branch=master)](https://travis-ci.org/jantechner/ScenarioQualityChecker)
+
 Projekt **serwera webowego** napisanego w Javie, z użyciem RESTful API i SpringBoot.
 
 Dla analityków dokumentujących wymagania funkcjonalne za pomocą scenariuszy nasza aplikacja SQC dostarczy **informacji ilościowych** oraz umożliwi wykrywanie problemów w wymaganiach funkcjonalnych zapisanych w postaci scenariuszy. Aplikacja dostępna poprzez **GUI** a także jako **zdalne API**, dzięki czemu można ją zintegrować z istniejącymi narzędziami.
