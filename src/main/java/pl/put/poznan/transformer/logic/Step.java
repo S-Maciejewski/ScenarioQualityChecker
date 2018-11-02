@@ -56,6 +56,17 @@ public class Step {
         }
         stepsCounter.addAndGet(1);
     }
+    
+    void countKeyWordSteps(AtomicInteger stepsCounter) {
+        if(substeps != null) {
+                for (Step step : substeps) {
+                    step.countKeyWordSteps(stepsCounter);
+            }
+        }
+        if(description.startsWith("ELSE:") || description.startsWith("FOR EACH:") || description.startsWith("IF:")) {
+            stepsCounter.addAndGet(1);
+        }
+    }
 
     //prefix pozwala na hierarchiczny podgląd wszystkich kroków - domyślnie ""
     public void showRecursively(String prefix) {
@@ -67,6 +78,6 @@ public class Step {
             }
         }
     }
-    
+
     
 }

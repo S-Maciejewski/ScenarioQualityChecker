@@ -87,6 +87,16 @@ public class Scenario {
         }
         return stepsCounter.intValue();
     }
+    
+    public int countKeyWordSteps() {
+        AtomicInteger stepsCounter = new AtomicInteger(0);
+        if (steps != null) {
+            for (Step step : steps) {
+                step.countKeyWordSteps(stepsCounter);
+            }
+        }
+        return stepsCounter.intValue();
+    }
 
     public JSONObject getScenario() {
         return scenario;
