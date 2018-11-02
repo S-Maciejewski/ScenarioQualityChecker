@@ -1,5 +1,10 @@
 package pl.put.poznan.transformer.logic;
+import java.lang.reflect.Array;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Collections;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 import net.minidev.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,8 +14,8 @@ public class Scenario {
     private JSONObject scenario;
 
     private String title;
-    private List<String> actors;
-    private List<String> systemActors;
+    private List<String> actors = new ArrayList<>();
+    private List<String> systemActors = new ArrayList<>();
 
     private List<Step> steps;
 
@@ -18,15 +23,31 @@ public class Scenario {
 
         this.scenario = sendscenario;
         this.title = sendscenario.getAsString("title");
-        this.actors = (List<String>) sendscenario.get("actors");
-        this.systemActors = (List<String>) sendscenario.get("system_actors");
+        this.actors = readJson("actors");
+        this.systemActors = readJson("system_actors");
+        this.steps = readJsonSteps();
 
         //TODO parsowanie scenariusza, wyodrębnienie poszczególnych kroków do klasy Step
 
     }
+
+    private List<String> readJson(String field) {
+
+        List<String> list = new ArrayList<>();
+        Object obj = this.scenario.get(field);
+
+        if (obj instanceof String) {
+            list.add((String)obj);
+        } else if (obj instanceof ArrayList<?>) {
+            for (Object o : (ArrayList) obj){
+                if (o instanceof String)
+                    list.add((String) o);
+            }
+        }
+        return list;
+    }
     
-    public List<Step> missingActorSteps()
-    {
+    public List<Step> missingActorSteps() {
         List<Step> wrongSteps = Collections.<Step>emptyList();
         if(steps != null){
             for (Step step : steps) {
