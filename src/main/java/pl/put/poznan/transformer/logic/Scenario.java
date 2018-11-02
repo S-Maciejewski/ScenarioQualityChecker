@@ -14,8 +14,8 @@ public class Scenario {
     private JSONObject scenario;
 
     private String title;
-    private List<String> actors = new ArrayList<>();
-    private List<String> systemActors = new ArrayList<>();
+    private List<String> actors;
+    private List<String> systemActors;
 
     private List<Step> steps;
 
@@ -27,24 +27,55 @@ public class Scenario {
         this.systemActors = readJson("system_actors");
         this.steps = readJsonSteps();
 
-        //TODO parsowanie scenariusza, wyodrębnienie poszczególnych kroków do klasy Step
+        for (Step s: this.steps) {
+            s.showRecursively("");
+        }
+        //TODO parsowanie scenariusza
 
     }
 
     private List<String> readJson(String field) {
-
         List<String> list = new ArrayList<>();
         Object obj = this.scenario.get(field);
-
         if (obj instanceof String) {
             list.add((String)obj);
-        } else if (obj instanceof ArrayList<?>) {
+        } else if (obj instanceof ArrayList) {
             for (Object o : (ArrayList) obj){
                 if (o instanceof String)
                     list.add((String) o);
             }
         }
         return list;
+    }
+
+    private List<Step> readJsonSteps() {
+        Object stepsAsObject = this.scenario.get("steps");
+        List<Object> stepsAsObjectsList = new ArrayList<>();
+        if (stepsAsObject instanceof ArrayList)
+             Collections.addAll(stepsAsObjectsList, stepsAsObject);
+        return recursiveStepsReader(stepsAsObjectsList);
+    }
+
+    private List<Step> recursiveStepsReader(List<Object> steps) {
+        List<Step> steplist = new ArrayList<>();
+        for (int i=0; i<steps.size(); i++) {
+            if (steps.get(i) instanceof String) {
+                if (i == steps.size() - 1) {
+                    steplist.add(new Step((String) steps.get(i), null));
+                } else {
+                    if (steps.get(i + 1) instanceof String) {
+                        steplist.add(new Step((String) steps.get(i), null));
+                    } else if (steps.get(i + 1) instanceof ArrayList) {
+                        List<Object> substepsAsObjectList = new ArrayList<>();
+                        if (steps.get(i + 1) instanceof ArrayList)
+                            Collections.addAll(substepsAsObjectList, steps.get(i+1));
+                        List<Step> substeps = recursiveStepsReader(substepsAsObjectList);
+                        steplist.add(new Step((String) steps.get(i), substeps));
+                    }
+                }
+            }
+        }
+        return steplist;
     }
     
     public List<Step> missingActorSteps() {
