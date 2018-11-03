@@ -1,5 +1,8 @@
 package pl.put.poznan.transformer.logic;
 
+import net.minidev.json.JSONArray;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,12 +66,25 @@ public class Step {
     
     void countKeyWordSteps(AtomicInteger stepsCounter) {
         if(substeps != null) {
-                for (Step step : substeps) {
-                    step.countKeyWordSteps(stepsCounter);
+            for (Step step : substeps) {
+                step.countKeyWordSteps(stepsCounter);
             }
         }
         if(description.startsWith("ELSE:") || description.startsWith("FOR EACH") || description.startsWith("IF:")) {
             stepsCounter.addAndGet(1);
+        }
+    }
+
+    public void getNumberedScenario(JSONArray numberedScenario, int maxdepth, List<String> currentNumbers) {
+        if (maxdepth >= currentNumbers.size() || maxdepth == 0) {
+            numberedScenario.add(String.join(".", currentNumbers) + ". " + this.description);
+            if (this.substeps != null) {
+                for (int i = 0; i < this.substeps.size(); i++) {
+                    currentNumbers.add(currentNumbers.size(), Integer.toString(i+1) );
+                    this.substeps.get(i).getNumberedScenario(numberedScenario, maxdepth, currentNumbers);
+                    currentNumbers.remove(currentNumbers.size() - 1);
+                }
+            }
         }
     }
 

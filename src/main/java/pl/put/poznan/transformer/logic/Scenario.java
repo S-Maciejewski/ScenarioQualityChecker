@@ -100,6 +100,17 @@ public class Scenario {
         return stepsCounter.intValue();
     }
 
+    public JSONArray showNumberedScenario(int depth) {
+        JSONArray numberedScenario = new JSONArray();
+        List<String> currentNumbers = new ArrayList<>();
+        for (int i = 0; i < steps.size(); i++) {
+            currentNumbers.add(Integer.toString(i+1));
+            steps.get(i).getNumberedScenario(numberedScenario, depth, currentNumbers);
+            currentNumbers.clear();
+        }
+        return numberedScenario;
+    }
+
     public JSONObject getScenario() {
         return scenario;
     }
@@ -116,7 +127,7 @@ public class Scenario {
         return steps;
     }
 
-    public JSONObject triggerFunction(String function) {
+    public JSONObject triggerFunction(String function, int intParam) {
         JSONObject response = new JSONObject();
         switch (function) {
             case "wrongSteps":
@@ -133,7 +144,11 @@ public class Scenario {
                 response.put("keywordStepsNumber", countKeyWordSteps());
                 break;
             case "showScenario":
-                response.put()
+                response.put("steps", showNumberedScenario(0));
+                break;
+            case "showScenarioWithMaxDepth":
+                response.put("steps", showNumberedScenario(intParam));
+                break;
             default:
                 break;
         }
