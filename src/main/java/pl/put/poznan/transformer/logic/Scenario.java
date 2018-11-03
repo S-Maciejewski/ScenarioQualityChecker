@@ -1,7 +1,5 @@
 package pl.put.poznan.transformer.logic;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import java.util.List;
@@ -70,7 +68,7 @@ public class Scenario {
         return steplist;
     }
     
-    public List<Step> missingActorSteps() {
+    private List<Step> missingActorSteps() {
         List<Step> wrongSteps = new ArrayList<>();
         if(steps != null){
             for (Step step : steps) {
@@ -80,7 +78,7 @@ public class Scenario {
         return wrongSteps;
     }
     
-    public int countSteps() {
+    private int countSteps() {
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
             for (Step step : steps) {
@@ -90,7 +88,7 @@ public class Scenario {
         return stepsCounter.intValue();
     }
     
-    public int countKeyWordSteps() {
+    private int countKeyWordSteps() {
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
             for (Step step : steps) {
@@ -100,7 +98,7 @@ public class Scenario {
         return stepsCounter.intValue();
     }
 
-    public JSONArray showNumberedScenario(int depth) {
+    private JSONArray showNumberedScenario(int depth) {
         JSONArray numberedScenario = new JSONArray();
         List<String> currentNumbers = new ArrayList<>();
         for (int i = 0; i < steps.size(); i++) {
@@ -109,22 +107,6 @@ public class Scenario {
             currentNumbers.clear();
         }
         return numberedScenario;
-    }
-
-    public JSONObject getScenario() {
-        return scenario;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public List<String> getActors() {
-        return actors;
-    }
-    public List<String> getSystemActors() {
-        return systemActors;
-    }
-    public List<Step> getSteps() {
-        return steps;
     }
 
     public JSONObject triggerFunction(String function, int intParam) {
