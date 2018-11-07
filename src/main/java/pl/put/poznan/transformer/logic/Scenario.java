@@ -7,6 +7,9 @@ import net.minidev.json.JSONObject;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Klasa "Scenario"
+ */
 public class Scenario {
 
     private JSONObject scenario;
@@ -17,6 +20,10 @@ public class Scenario {
 
     private List<Step> steps;
 
+    /**
+     * Konstruktor obiektów klasy "Scenario"
+     * @param sendscenario Scenariusz do przetworzenia
+     */
     public Scenario(JSONObject sendscenario) {
 
         this.scenario = sendscenario;
@@ -26,6 +33,11 @@ public class Scenario {
         this.steps = readJsonSteps();
     }
 
+    /**
+     * Metoda zwraca listę wartości z danej kolekcji
+     * @param field Kolekcja, dla której wartości mają zostać odczytane
+     * @return Lista wartości kolekcji
+     */
     private List<String> readJson(String field) {
         List<String> list = new ArrayList<>();
         Object obj = this.scenario.get(field);
@@ -40,6 +52,10 @@ public class Scenario {
         return list;
     }
 
+    /**
+     * Metoda zwracająca listę "steps"
+     * @return Lista "steps"
+     */
     private List<Step> readJsonSteps() {
         Object stepsAsObject = this.scenario.get("steps");
         List<Object> stepsAsObjectsList = new ArrayList<>();
@@ -48,6 +64,11 @@ public class Scenario {
         return recursiveStepsReader(stepsAsObjectsList);
     }
 
+    /**
+     * Rekurencyjne odczytywanie (przetworzenie) "steps"
+     * @param steps Lista obiektów z kolekcji "steps"
+     * @return Przetworzona lista "steps"
+     */
     private List<Step> recursiveStepsReader(List<Object> steps) {
         List<Step> steplist = new ArrayList<>();
         for (int i=0; i<steps.size(); i++) {
@@ -69,7 +90,11 @@ public class Scenario {
         }
         return steplist;
     }
-    
+
+    /**
+     * Metoda zwraca "wrongSteps:
+     * @return "wrongSteps"
+     */
     public List<Step> missingActorSteps() {
         List<Step> wrongSteps = new ArrayList<>();
         if(steps != null){
@@ -79,7 +104,11 @@ public class Scenario {
         }
         return wrongSteps;
     }
-    
+
+    /**
+     * Metoda liczy liczbę etapów
+     * @return Liczba etapów
+     */
     public int countSteps() {
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
@@ -89,7 +118,11 @@ public class Scenario {
         }
         return stepsCounter.intValue();
     }
-    
+
+    /**
+     * Meotda liczy liczbę słów kluczowych w poszczególnych etapach
+     * @return Liczba słów kluczowych
+     */
     public int countKeyWordSteps() {
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
@@ -100,6 +133,11 @@ public class Scenario {
         return stepsCounter.intValue();
     }
 
+    /**
+     * Tworzy kolekcję hierarchicznie ponumerowanych scenariuszy do zadanej głębokości
+     * @param depth Głębokość
+     * @return Hierarchicznie ponumerowane scenariusze
+     */
     public JSONArray showNumberedScenario(int depth) {
         JSONArray numberedScenario = new JSONArray();
         List<String> currentNumbers = new ArrayList<>();
@@ -111,22 +149,52 @@ public class Scenario {
         return numberedScenario;
     }
 
+    /**
+     * Metoda zwraca scenariusz
+     * @return Sceariusz
+     */
     public JSONObject getScenario() {
         return scenario;
     }
+
+    /**
+     * Metoda zwraca tytuł scenariusza
+     * @return Tytuł scenariusza
+     */
     public String getTitle() {
         return title;
     }
+
+    /**
+     * Metoda zwraca listę aktorów
+     * @return Lista aktorów
+     */
     public List<String> getActors() {
         return actors;
     }
+
+    /***
+     * Metoda zwraca liczbę aktorów systemowych
+     * @return Lista aktorów systemowych
+     */
     public List<String> getSystemActors() {
         return systemActors;
     }
+
+    /**
+     * Metoda zwraca listę etapów
+     * @return Lista etapów
+     */
     public List<Step> getSteps() {
         return steps;
     }
 
+    /**
+     * Metoda zwraca obiekt kolekcji utworzony wybraną funkcją
+     * @param function Wybrana funkcja
+     * @param intParam Dodatkowy parametr
+     * @return Wynik wybranej funkcji
+     */
     public JSONObject triggerFunction(String function, int intParam) {
         JSONObject response = new JSONObject();
         switch (function) {
@@ -154,6 +222,4 @@ public class Scenario {
         }
         return response;
     }
-
-
 }
