@@ -92,7 +92,7 @@ public class Scenario {
     }
 
     /**
-     * Metoda zwraca "wrongSteps:
+     * Metoda zwraca "wrongSteps"
      * @return "wrongSteps"
      */
     public List<Step> missingActorSteps() {

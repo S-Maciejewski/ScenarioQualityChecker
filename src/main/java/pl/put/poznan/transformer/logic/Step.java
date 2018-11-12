@@ -36,7 +36,7 @@ public class Step {
     /**
      * Metoda sprawdza, czy opis etapu zaczyna się od aktora lub aktora systemowego;
      * usuwa początkowy "IF:";
-     * jeśli wynik nie spełnia warunku, dodaje etap do listy wrongSteps";
+     * jeśli wynik nie spełnia warunku, dodaje etap do listy "wrongSteps";
      * Następnie wywołuje metodę {@link #checkSubstepsSWA(List, List, List)}
      * @param wrongSteps Lista niepoprawnych opisów etapów
      * @param actors Lista aktorów
@@ -70,7 +70,7 @@ public class Step {
     }
 
     /**
-     * Metoda wywołuje metodę {@link #startsWithActor(List, List, List)} dla każdego element z listy {@link #substeps}
+     * Metoda wywołuje metodę {@link #startsWithActor(List, List, List)} dla każdego element z listy "substeps"
      * @param wrongSteps Lista etapów
      * @param actors Lista aktorów
      * @param systemActors Lista aktorów systemowych
