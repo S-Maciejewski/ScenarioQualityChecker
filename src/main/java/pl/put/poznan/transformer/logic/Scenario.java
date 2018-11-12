@@ -102,17 +102,12 @@ public class Scenario {
         }
         return wrongSteps;
     }
-<<<<<<< HEAD
-    
-    private int countSteps() {
-=======
 
     /**
      * Metoda liczy liczbę etapów
      * @return Liczba etapów
      */
     public int countSteps() {
->>>>>>> b1af08a671051a37bcc0464de60de51d3119df4d
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
             for (Step step : steps) {
@@ -121,17 +116,12 @@ public class Scenario {
         }
         return stepsCounter.intValue();
     }
-<<<<<<< HEAD
-    
-    private int countKeyWordSteps() {
-=======
 
     /**
      * Meotda liczy liczbę słów kluczowych w poszczególnych etapach
      * @return Liczba słów kluczowych
      */
     public int countKeyWordSteps() {
->>>>>>> b1af08a671051a37bcc0464de60de51d3119df4d
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
             for (Step step : steps) {
@@ -141,16 +131,12 @@ public class Scenario {
         return stepsCounter.intValue();
     }
 
-<<<<<<< HEAD
-    private JSONArray showNumberedScenario(int depth) {
-=======
     /**
      * Tworzy kolekcję hierarchicznie ponumerowanych scenariuszy do zadanej głębokości
      * @param depth Głębokość
      * @return Hierarchicznie ponumerowane scenariusze
      */
     public JSONArray showNumberedScenario(int depth) {
->>>>>>> b1af08a671051a37bcc0464de60de51d3119df4d
         JSONArray numberedScenario = new JSONArray();
         List<String> currentNumbers = new ArrayList<>();
         for (int i = 0; i < steps.size(); i++) {
@@ -161,8 +147,6 @@ public class Scenario {
         return numberedScenario;
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Metoda zwraca scenariusz
      * @return Sceariusz
@@ -209,7 +193,6 @@ public class Scenario {
      * @param intParam Dodatkowy parametr
      * @return Wynik wybranej funkcji
      */
->>>>>>> b1af08a671051a37bcc0464de60de51d3119df4d
     public JSONObject triggerFunction(String function, int intParam) {
         JSONObject response = new JSONObject();
         switch (function) {
