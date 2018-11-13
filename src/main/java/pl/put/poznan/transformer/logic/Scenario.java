@@ -6,34 +6,59 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Klasa "Scenario"
+ * <h1>Klasa "Scenario"</h1>
+ * Klasa reprezentuje scenariusz działań wysłany przez użytkownika
+ * i udostępnia zbiór metod w celu jego przetwarzania
+ * @author Jan Techner
+ * @version 4.0
+ * @since 2018-10-31
+ *
  */
 public class Scenario {
 
+    /**
+     * Scenariusz w postaci JSON
+     */
     private JSONObject scenario;
 
+    /**
+     * Tytuł scenariusza
+     */
     private String title;
+
+    /**
+     * Lista aktorów scenariusza
+     */
     private List<String> actors;
+
+    /**
+     * Lista aktorów systemowych scenariusza
+     */
     private List<String> systemActors;
 
+    /**
+     * Lista kroków scenariusza
+     */
     private List<Step> steps;
 
     /**
-     * Konstruktor obiektów klasy "Scenario"
-     * @param sendscenario Scenariusz do przetworzenia
+     * <h1>Konstruktor klasy "Scenario"</h1>
+     * Konstruktor przetwarza wysłany scenariusz i wyodrębnia elementy takie jak
+     * tytuł scenariusza, aktorów i listę kroków
+     * @param sentScenario Scenario sent by user
      */
-    public Scenario(JSONObject sendscenario) {
+    public Scenario(JSONObject sentScenario) {
 
-        this.scenario = sendscenario;
-        this.title = sendscenario.getAsString("title");
+        this.scenario = sentScenario;
+        this.title = sentScenario.getAsString("title");
         this.actors = readJson("actors");
         this.systemActors = readJson("system_actors");
         this.steps = readJsonSteps();
     }
 
     /**
-     * Metoda zwraca listę wartości z danej kolekcji
-     * @param field Kolekcja, dla której wartości mają zostać odczytane
+     * Metoda zwraca listę wartości z wysłanego scenariusza w postaci JSON
+     * @param field Nazwa kolekcji, której wartości mają zostać odczytane
      * @return Lista wartości kolekcji
      */
     private List<String> readJson(String field) {
@@ -51,8 +76,9 @@ public class Scenario {
     }
 
     /**
-     * Metoda zwracająca listę "steps"
-     * @return Lista "steps"
+     * Metoda odczytuje obiekt zawierający kroki z pliku JSON, inicjuje rekursywne odczytanie kroków
+     * scenariusza i zwraca ich zagnieżdżoną listę
+     * @return Lista kroków scenariusza
      */
     private List<Step> readJsonSteps() {
         Object stepsAsObject = this.scenario.get("steps");
@@ -63,9 +89,9 @@ public class Scenario {
     }
 
     /**
-     * Rekurencyjne odczytywanie (przetworzenie) "steps"
-     * @param steps Lista obiektów z kolekcji "steps"
-     * @return Przetworzona lista "steps"
+     * Metoda rekursywnie odczytuje kroki scenariusza
+     * @param steps Lista obiektów zawierających kroki scenariusza
+     * @return Lista kroków scenariusza
      */
     private List<Step> recursiveStepsReader(List<Object> steps) {
         List<Step> steplist = new ArrayList<>();
@@ -90,10 +116,10 @@ public class Scenario {
     }
 
     /**
-     * Metoda zwraca "wrongSteps"
-     * @return "wrongSteps"
+     * Metoda zwraca listę kroków, które nie rozpoczynają się od poprawnego aktora scenariusza
+     * @return List<Step> Lista kroków zawierających niepoprawnego aktora
      */
-    public List<Step> missingActorSteps() {
+    private List<Step> missingActorSteps() {
         List<Step> wrongSteps = new ArrayList<>();
         if(steps != null){
             for (Step step : steps) {
@@ -104,10 +130,10 @@ public class Scenario {
     }
 
     /**
-     * Metoda liczy liczbę etapów
-     * @return Liczba etapów
+     * Metoda zlicza sumaryczną liczbę kroków scenariusza
+     * @return int Liczba kroków scenariusza
      */
-    public int countSteps() {
+    private int countSteps() {
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
             for (Step step : steps) {
@@ -118,10 +144,10 @@ public class Scenario {
     }
 
     /**
-     * Meotda liczy liczbę słów kluczowych w poszczególnych etapach
-     * @return Liczba słów kluczowych
+     * Metoda zlicza liczbę słów kluczowych we wszystkich krokach scenariusza
+     * @return int Liczba słów kluczowych
      */
-    public int countKeyWordSteps() {
+    private int countKeyWordSteps() {
         AtomicInteger stepsCounter = new AtomicInteger(0);
         if (steps != null) {
             for (Step step : steps) {
@@ -132,11 +158,11 @@ public class Scenario {
     }
 
     /**
-     * Tworzy kolekcję hierarchicznie ponumerowanych scenariuszy do zadanej głębokości
+     * Metoda zwraca kolekcję hierarchicznie ponumerowanych scenariuszy do zadanej głębokości
      * @param depth Głębokość
-     * @return Hierarchicznie ponumerowane scenariusze
+     * @return JSONArray Lista hierarchicznie ponumerowanych kroków scenariusza
      */
-    public JSONArray showNumberedScenario(int depth) {
+    private JSONArray showNumberedScenario(int depth) {
         JSONArray numberedScenario = new JSONArray();
         List<String> currentNumbers = new ArrayList<>();
         for (int i = 0; i < steps.size(); i++) {
@@ -188,7 +214,7 @@ public class Scenario {
     }
 
     /**
-     * Metoda zwraca obiekt kolekcji utworzony wybraną funkcją
+     * Metoda wywołuje odpowiednią funkcję klasy Scenario
      * @param function Wybrana funkcja
      * @param intParam Dodatkowy parametr
      * @return Wynik wybranej funkcji
