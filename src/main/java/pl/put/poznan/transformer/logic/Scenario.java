@@ -20,7 +20,7 @@ public class Scenario {
 
     private List<Step> steps;
 
-    private ScenarioHelper helper = new ScenarioHelper();
+    ScenarioHelper helper = new ScenarioHelper();
 
     /**
      * Konstruktor obiektów klasy "Scenario"
@@ -73,7 +73,7 @@ public class Scenario {
      */
     private List<Step> recursiveStepsReader(List<Object> steps) {
         List<Step> steplist = new ArrayList<>();
-        for (int i=0; i<steps.size(); i++) {
+        for (int i=0; i<steps.size(); i++)
             if (steps.get(i) instanceof String) {
                 if (i == steps.size() - 1) {
                     steplist.add(new Step((String) steps.get(i), null));
@@ -83,22 +83,14 @@ public class Scenario {
                     } else if (steps.get(i + 1) instanceof ArrayList) {
                         List<Object> substepsAsObjectList = new ArrayList<>();
                         if (steps.get(i + 1) instanceof ArrayList)
-                            substepsAsObjectList.addAll((ArrayList)steps.get(i+1));
+                            substepsAsObjectList.addAll((ArrayList) steps.get(i + 1));
                         List<Step> substeps = recursiveStepsReader(substepsAsObjectList);
                         steplist.add(new Step((String) steps.get(i), substeps));
                     }
                 }
             }
-        }
         return steplist;
     }
-
-
-
-
-
-
-
 
 
     /**
@@ -139,39 +131,5 @@ public class Scenario {
      */
     public List<Step> getSteps() {
         return steps;
-    }
-
-    /**
-     * Metoda zwraca obiekt kolekcji utworzony wybraną funkcją
-     * @param function Wybrana funkcja
-     * @param intParam Dodatkowy parametr
-     * @return Wynik wybranej funkcji
-     */
-    public JSONObject triggerFunction(String function, int intParam) {
-        JSONObject response = new JSONObject();
-        switch (function) {
-            case "wrongSteps":
-                JSONArray wrongStepsJSON = new JSONArray();
-                for (Step s: helper.missingActorSteps(steps, actors, systemActors)){
-                    wrongStepsJSON.add(s.getDescription());
-                }
-                response.put("wrongSteps", wrongStepsJSON);
-                break;
-            case "countSteps":
-                response.put("stepsNumber", helper.countSteps(steps));
-                break;
-            case "countKeyWordSteps":
-                response.put("keywordStepsNumber", helper.countKeyWordSteps(steps));
-                break;
-            case "showScenario":
-                response.put("steps", helper.showNumberedScenario(steps, 0));
-                break;
-            case "showScenarioWithMaxDepth":
-                response.put("steps", helper.showNumberedScenario(steps, intParam));
-                break;
-            default:
-                break;
-        }
-        return response;
     }
 }
