@@ -20,6 +20,8 @@ public class Scenario {
 
     private List<Step> steps;
 
+    private ScenarioHelper helper = new ScenarioHelper();
+
     /**
      * Konstruktor obiektów klasy "Scenario"
      * @param sendscenario Scenariusz do przetworzenia
@@ -91,63 +93,13 @@ public class Scenario {
         return steplist;
     }
 
-    /**
-     * Metoda zwraca "wrongSteps"
-     * @return "wrongSteps"
-     */
-    public List<Step> missingActorSteps() {
-        List<Step> wrongSteps = new ArrayList<>();
-        if(steps != null){
-            for (Step step : steps) {
-                step.startsWithActor(wrongSteps, actors, systemActors);
-            }
-        }
-        return wrongSteps;
-    }
 
-    /**
-     * Metoda liczy liczbę etapów
-     * @return Liczba etapów
-     */
-    public int countSteps() {
-        AtomicInteger stepsCounter = new AtomicInteger(0);
-        if (steps != null) {
-            for (Step step : steps) {
-                step.countSteps(stepsCounter);
-            }
-        }
-        return stepsCounter.intValue();
-    }
 
-    /**
-     * Meotda liczy liczbę słów kluczowych w poszczególnych etapach
-     * @return Liczba słów kluczowych
-     */
-    public int countKeyWordSteps() {
-        AtomicInteger stepsCounter = new AtomicInteger(0);
-        if (steps != null) {
-            for (Step step : steps) {
-                step.countKeyWordSteps(stepsCounter);
-            }
-        }
-        return stepsCounter.intValue();
-    }
 
-    /**
-     * Tworzy kolekcję hierarchicznie ponumerowanych scenariuszy do zadanej głębokości
-     * @param depth Głębokość
-     * @return Hierarchicznie ponumerowane scenariusze
-     */
-    public JSONArray showNumberedScenario(int depth) {
-        JSONArray numberedScenario = new JSONArray();
-        List<String> currentNumbers = new ArrayList<>();
-        for (int i = 0; i < steps.size(); i++) {
-            currentNumbers.add(Integer.toString(i+1));
-            steps.get(i).getNumberedScenario(numberedScenario, depth, currentNumbers);
-            currentNumbers.clear();
-        }
-        return numberedScenario;
-    }
+
+
+
+
 
     /**
      * Metoda zwraca scenariusz
@@ -200,22 +152,22 @@ public class Scenario {
         switch (function) {
             case "wrongSteps":
                 JSONArray wrongStepsJSON = new JSONArray();
-                for (Step s: missingActorSteps()){
+                for (Step s: helper.missingActorSteps(steps, actors, systemActors)){
                     wrongStepsJSON.add(s.getDescription());
                 }
                 response.put("wrongSteps", wrongStepsJSON);
                 break;
             case "countSteps":
-                response.put("stepsNumber", countSteps());
+                response.put("stepsNumber", helper.countSteps(steps));
                 break;
             case "countKeyWordSteps":
-                response.put("keywordStepsNumber", countKeyWordSteps());
+                response.put("keywordStepsNumber", helper.countKeyWordSteps(steps));
                 break;
             case "showScenario":
-                response.put("steps", showNumberedScenario(0));
+                response.put("steps", helper.showNumberedScenario(steps, 0));
                 break;
             case "showScenarioWithMaxDepth":
-                response.put("steps", showNumberedScenario(intParam));
+                response.put("steps", helper.showNumberedScenario(steps, intParam));
                 break;
             default:
                 break;
