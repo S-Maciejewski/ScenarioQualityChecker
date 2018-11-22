@@ -22,7 +22,13 @@ class ScenarioHelper {
         List<Step> wrongSteps = new ArrayList<>();
         if(steps != null){
             for (Step step : steps) {
-                step.startsWithActor(wrongSteps, actors, systemActors);
+                if (StepHelper.hasInvalidActor(step, actors, systemActors))
+                    wrongSteps.add(step);
+                if (step.getSubsteps() != null) {
+                    List<Step> wrongSubsteps = StepHelper.stepsWithInvalidActors(step.getSubsteps(), actors, systemActors);
+                    if (wrongSteps.size() != 0)
+                        wrongSteps.addAll(wrongSubsteps);
+                }
             }
         }
         return wrongSteps;
@@ -35,13 +41,14 @@ class ScenarioHelper {
      * @return Liczba kroków scenariusza
      */
     public int countSteps(List<Step> steps) {
-        AtomicInteger stepsCounter = new AtomicInteger(0);
-        if (steps != null) {
+        int stepsCounter = 0;
+        if (steps != null)
             for (Step step : steps) {
-                step.countSteps(stepsCounter);
+                stepsCounter += 1;
+                if (step.getSubsteps() != null)
+                    stepsCounter += StepHelper.countSteps(step.getSubsteps());
             }
-        }
-        return stepsCounter.intValue();
+        return stepsCounter;
     }
 
 

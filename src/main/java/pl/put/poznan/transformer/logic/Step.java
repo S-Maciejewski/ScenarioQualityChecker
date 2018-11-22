@@ -16,85 +16,30 @@ public class Step {
     private String description;
 
     /**
-     * Konstruuje obiekt klasy "Step"
-     * @param description Opis obiektu (etapu)
-     * @param substeps Lista "substeps" (podetapów)
+     * Konstruktor klasy "Step"
+     * @param description Opis kroku scenariusza
+     * @param substeps Lista podkroków kroku scenariusza
      */
     public Step(String description, List<Step> substeps) {
         this.substeps = substeps;
         this.description = description;
     }
 
+
     /**
-     * Zwraca opis etapu
-     * @return opis etapu
+     * Metoda zwraca opis kroku scenariusza
+     * @return Opis kroku scenariusza
      */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Metoda sprawdza, czy opis etapu zaczyna się od aktora lub aktora systemowego;
-     * usuwa początkowy "IF:";
-     * jeśli wynik nie spełnia warunku, dodaje etap do listy "wrongSteps";
-     * Następnie wywołuje metodę {@link #checkSubstepsSWA(List, List, List)}
-     * @param wrongSteps Lista niepoprawnych opisów etapów
-     * @param actors Lista aktorów
-     * @param systemActors Lista aktorów systemowych
-     */
-    public void startsWithActor(List<Step> wrongSteps, List<String> actors, List<String> systemActors) {
-        if(!(description.startsWith("ELSE:") || description.startsWith("FOR EACH:"))) {
-            description = (description.replaceAll("IF:", "")).trim();
-            Boolean correct = false;
-            if(actors != null){
-                for (String actor : actors) {
-                    if(description.startsWith(actor)) {
-                        correct = true;
-                        break;
-                    }
-                }
-            }
-            if(!correct && systemActors != null){
-                for (String systemActor : systemActors) {
-                    if(description.startsWith(systemActor)) {
-                        correct = true;
-                        break;
-                    }
-                }
-            }
-            if(!correct){
-                wrongSteps.add(this);
-            }
-        }
-        checkSubstepsSWA(wrongSteps, actors, systemActors);
-    }
 
     /**
-     * Metoda wywołuje metodę {@link #startsWithActor(List, List, List)} dla każdego element z listy "substeps"
-     * @param wrongSteps Lista etapów
-     * @param actors Lista aktorów
-     * @param systemActors Lista aktorów systemowych
+     * Metoda zwraca listę podkroków scenariusza
+     * @return Lista podkroków scenariusza
      */
-    public void checkSubstepsSWA(List<Step> wrongSteps, List<String> actors, List<String> systemActors) {
-        if(substeps != null) {
-                for (Step step : substeps) {
-                    step.startsWithActor(wrongSteps, actors, systemActors);
-            }
-        }
-    }
-
-    /**
-     * Metoda liczy liczbę podetapów
-     * @param stepsCounter Licznik etapu
-     */
-    void countSteps(AtomicInteger stepsCounter) {
-        if(substeps != null) {
-                for (Step step : substeps) {
-                    step.countSteps(stepsCounter);
-            }
-        }
-        stepsCounter.addAndGet(1);
-    }
+    public List<Step> getSubsteps() { return substeps; }
 
     /**
      * Metoda liczy liczbę słów kluczowych "ELSE:", "FOR EACH", "IF:"
