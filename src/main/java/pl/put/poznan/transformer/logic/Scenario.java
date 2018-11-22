@@ -25,9 +25,9 @@ public class Scenario {
     public Scenario(JSONObject sendscenario) {
         this.scenario = sendscenario;
         this.title = sendscenario.getAsString("title");
-        this.actors = JSONReader.getProperty(scenario, "actors");
-        this.systemActors = JSONReader.getProperty(scenario, "system_actors");
-        this.steps = JSONReader.getStepsRecursively(JSONReader.getObjectsList(scenario, "steps"));
+        this.actors = JSONTools.getProperty(scenario, "actors");
+        this.systemActors = JSONTools.getProperty(scenario, "system_actors");
+        this.steps = JSONTools.getStepsRecursively(JSONTools.getObjectsList(scenario, "steps"));
     }
 
 

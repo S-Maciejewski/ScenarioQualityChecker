@@ -37,40 +37,14 @@ public class StepHelper {
 
 
     /**
-     * Metoda zwraca rekurencyjnie listę kroków scenariusza
-     * zaczynających się od niepoprawnego aktora
-     * @param steps Lista kroków scenariusza
-     * @param actors Lista poprawnych aktorów scenariusza
-     * @param systemActors Lista poprawnych sktorów systemowych scenariusza
-     * @return Lista kroków zaczynających się od niepoprawnego aktora
+     * Metoda sprawdza, czy opis kroku zaczyna się od słowa kluczowego
+     * @param description Opis kroku scenariusza
+     * @return boolean Informacja o tym, czy opis kroku zaczyna się od słowa kluczowego
      */
-    static List<Step> stepsWithInvalidActors(List<Step> steps, List<String> actors,List<String> systemActors) {
-        List<Step> wrongSteps = new ArrayList<>();
-        for (Step step : steps) {
-            if (!StepHelper.hasInvalidActor(step, actors, systemActors))
-                wrongSteps.add(step);
-            if (step.getSubsteps() != null) {
-                List<Step> wrongSubsteps = stepsWithInvalidActors(step.getSubsteps(), actors, systemActors);
-                if (wrongSubsteps.size() != 0)
-                    wrongSteps.addAll(wrongSubsteps);
-            }
-        }
-        return wrongSteps;
-    }
-
-
-    /**
-     * Metoda zwraca rekurencyjnie liczbę kroków w zbiorze podkroków scenariusza
-     * @param substeps Lista podkroków scenariusza
-     * @return Liczba kroków w zbiorze podkroków scenariusza
-     */
-    static int countSteps(List<Step> substeps) {
-        int counter = 0;
-        for (Step step : substeps) {
-            counter += 1;
-            if (step.getSubsteps() != null)
-                counter += StepHelper.countSteps(step.getSubsteps());
-        }
-        return counter;
+    static boolean startsWithKeyword(String description) {
+        for (String keyword : Step.KEYWORDS)
+            if (description.startsWith(keyword))
+                return true;
+        return false;
     }
 }

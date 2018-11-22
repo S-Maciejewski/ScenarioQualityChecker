@@ -12,75 +12,73 @@ import java.util.concurrent.atomic.AtomicInteger;
 class ScenarioHelper {
 
     /**
-     * Metoda zwraca kroki, które nie zaczynają się od aktora/aktora systemowego
+     * Metoda zwraca kroki, które nie zaczynają się od aktora lub aktora systemowego
      * @param steps Lista kroków, w której będą szukane błędne kroki
      * @param actors Lista poprawnych aktorów
      * @param systemActors Lista poprawnych aktorów systemowych
-     * @return Lista błędnych kroków
+     * @return List<Step> Lista błędnych kroków
      */
-    public List<Step> missingActorSteps(List<Step> steps, List<String> actors,List<String> systemActors) {
+    List<Step> stepsWithInvalidActor(List<Step> steps, List<String> actors, List<String> systemActors) {
         List<Step> wrongSteps = new ArrayList<>();
-        if(steps != null){
+        if (!steps.isEmpty())
             for (Step step : steps) {
-                if (StepHelper.hasInvalidActor(step, actors, systemActors))
+                if (!step.helper.hasInvalidActor(step, actors, systemActors))
                     wrongSteps.add(step);
                 if (step.getSubsteps() != null) {
-                    List<Step> wrongSubsteps = StepHelper.stepsWithInvalidActors(step.getSubsteps(), actors, systemActors);
-                    if (wrongSteps.size() != 0)
+                    List<Step> wrongSubsteps = stepsWithInvalidActor(step.getSubsteps(), actors, systemActors);
+                    if (wrongSubsteps.size() != 0)
                         wrongSteps.addAll(wrongSubsteps);
                 }
             }
-        }
         return wrongSteps;
     }
 
 
     /**
-     * Metoda zlicza liczbę wszystkich kroków scenariusza
-     * @param steps Lista kroków, w której zliczane będą kroki
-     * @return Liczba kroków scenariusza
+     * Metoda zwraca rekurencyjnie liczbę kroków
+     * scenariusza, określonych przez parametr 'mode'
+     * @param steps Lista podkroków scenariusza
+     * @param mode Rodzaj zliczanych kroków: "all steps" lub "keyword steps"
+     * @return int Liczba określonych kroków w scenariuszu
      */
-    public int countSteps(List<Step> steps) {
-        int stepsCounter = 0;
-        if (steps != null)
+    int countSteps(List<Step> steps, String mode) {
+        int counter = 0;
+        if (!steps.isEmpty())
             for (Step step : steps) {
-                stepsCounter += 1;
+                if (mode.equals("all steps"))
+                    counter += 1;
+                else if (mode.equals("keyword steps"))
+                    if (step.helper.startsWithKeyword(step.getDescription()))
+                        counter += 1;
                 if (step.getSubsteps() != null)
-                    stepsCounter += StepHelper.countSteps(step.getSubsteps());
+                    counter += countSteps(step.getSubsteps(), mode);
             }
-        return stepsCounter;
+        return counter;
     }
 
 
     /**
-     * Meotda liczy liczbę słów kluczowych w poszczególnych krokach
-     * @param steps Lista kroków, w której zliczane będą słowa kluczowe
-     * @return Liczba słów kluczowych
+     * Metoda zwraca listę ponumerowanych kroków scenariusza
+     * do zadanej głębokości, uwzględniając zagnieżdżenia
+     * W przypadku maksymalnej głębokości przeszukiwania
+     * równej 0, zwracane są wszystkie kroki scenariusza
+     * @param steps Lista kroków scenariusza
+     * @param maxdepth Maksymalny poziom zagłębienia
+     * @param currentNumbers Lista aktualnych numerów zagnieżdżenia
+     * @return List<String> Lista ponumerowanych kroków scenariusza
      */
-    public int countKeyWordSteps(List<Step> steps) {
-        AtomicInteger stepsCounter = new AtomicInteger(0);
-        if (steps != null) {
-            for (Step step : steps) {
-                step.countKeyWordSteps(stepsCounter);
+    List<String> getNumberedScenario(List<Step> steps, int maxdepth, List<String> currentNumbers) {
+        List<String> numberedScenario = new ArrayList<>();
+        if (!steps.isEmpty()) {
+            if (currentNumbers.size() < maxdepth || maxdepth == 0) {
+                for (int i = 0; i < steps.size(); i++) {
+                    currentNumbers.add(currentNumbers.size(), Integer.toString(i + 1));
+                    numberedScenario.add(String.join(".", currentNumbers) + ". " + steps.get(i).getDescription());
+                    if (steps.get(i).getSubsteps() != null)
+                        numberedScenario.addAll(getNumberedScenario(steps.get(i).getSubsteps(), maxdepth, currentNumbers));
+                    currentNumbers.remove(currentNumbers.size() - 1);
+                }
             }
-        }
-        return stepsCounter.intValue();
-    }
-
-
-    /**
-     * Tworzy kolekcję hierarchicznie ponumerowanych scenariuszy do zadanej głębokości
-     * @param steps Przetwarzana lista kroków
-     * @param depth Głębokość
-     * @return Hierarchicznie ponumerowane scenariusze
-     */
-    public JSONArray showNumberedScenario(List<Step> steps, int depth) {
-        JSONArray numberedScenario = new JSONArray();
-        List<String> currentNumbers = new ArrayList<>();
-        for (int i = 0; i < steps.size(); i++) {
-            currentNumbers.add(Integer.toString(i+1));
-            steps.get(i).getNumberedScenario(numberedScenario, depth, currentNumbers);
-            currentNumbers.clear();
         }
         return numberedScenario;
     }

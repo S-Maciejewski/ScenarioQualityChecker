@@ -1,14 +1,15 @@
 package pl.put.poznan.transformer.logic;
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Klasa "JSONReader" zawierająca metody przetwarzające i
+ * Klasa "JSONTools" zawierająca metody przetwarzające i
  * odczytujące obiekty w formacie JSON
  */
-class JSONReader {
+class JSONTools {
 
     /**
      * Metoda zwraca listę wartości z wybranej właściwości pliku w formacie JSON
@@ -63,5 +64,22 @@ class JSONReader {
                 }
             }
         return steplist;
+    }
+
+
+    /**
+     * Metoda konwertująca listę obiektów na listę formacie JSON
+     * @param list Lista obiektów do skonwertowania
+     * @return JSONArray Lista w formacie JSON
+     */
+    static JSONArray toJSONArray(List<?> list) {
+        JSONArray jsonArray = new JSONArray();
+        for (Object obj: list) {
+            if (obj instanceof Step)
+                jsonArray.add(((Step) obj).getDescription());
+            if (obj instanceof String)
+                jsonArray.add(obj);
+        }
+        return jsonArray;
     }
 }
