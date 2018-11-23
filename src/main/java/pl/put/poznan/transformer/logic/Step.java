@@ -23,7 +23,7 @@ public class Step {
     /**
      * Pozwala na wykorzystanie metod przetwarzania kroku scenariusza
      */
-    public StepHelper helper;
+    public StepHelper helper = new StepHelper();
 
     /**
      * Konstruktor klasy Step
