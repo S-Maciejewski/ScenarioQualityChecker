@@ -1,7 +1,9 @@
 package pl.put.poznan.transformer.logic;
 
 import net.minidev.json.JSONObject;
-import java.util.ArrayList;
+import pl.put.poznan.transformer.logic.visitor.CountStepsVisitor;
+import pl.put.poznan.transformer.logic.visitor.NumberStepsVisitor;
+import pl.put.poznan.transformer.logic.visitor.WrongStepsVisitor;
 
 /**
  * Uruchamia wybraną funkcję przetwarzającą scenariusz
@@ -17,25 +19,31 @@ public class FunctionTrigger {
      */
     public static JSONObject run(Scenario scenario, String function, int intParam) {
         JSONObject response = new JSONObject();
-
         switch (function) {
             case "wrongSteps":
-                response.put("wrongSteps", JSONTools.toJSONArray(scenario.helper.stepsWithInvalidActor(
-                        scenario.getSteps(), scenario.getActors(), scenario.getSystemActors())));
+                WrongStepsVisitor sVisitor = new WrongStepsVisitor(scenario.getActors(), scenario.getSystemActors());
+                scenario.accept(sVisitor);
+                response.put("wrongSteps", JSONTools.toJSONArray(sVisitor.getWrongSteps()));
                 break;
             case "countSteps":
-                response.put("stepsNumber", scenario.helper.countSteps(scenario.getSteps(), "all steps"));
+                CountStepsVisitor scenarioVisitor = new CountStepsVisitor("all steps");
+                scenario.accept(scenarioVisitor);
+                response.put("stepsNumber", scenarioVisitor.getStepsCounter());
                 break;
             case "countKeyWordSteps":
-                response.put("keywordStepsNumber", scenario.helper.countSteps(scenario.getSteps(), "keyword steps"));
+                scenarioVisitor = new CountStepsVisitor("keyword steps");
+                scenario.accept(scenarioVisitor);
+                response.put("keywordStepsNumber", scenarioVisitor.getStepsCounter());
                 break;
             case "showScenario":
-                response.put("steps", JSONTools.toJSONArray(scenario.helper.getNumberedScenario(
-                        scenario.getSteps(), 0, new ArrayList<>())));
+                NumberStepsVisitor scenario1Visitor = new NumberStepsVisitor(0);
+                scenario.accept(scenario1Visitor);
+                response.put("steps", JSONTools.toJSONArray(scenario1Visitor.getNumberedSteps()));
                 break;
             case "showScenarioWithMaxDepth":
-                response.put("steps", JSONTools.toJSONArray(scenario.helper.getNumberedScenario(
-                        scenario.getSteps(), intParam, new ArrayList<>())));
+                scenario1Visitor = new NumberStepsVisitor(intParam);
+                scenario.accept(scenario1Visitor);
+                response.put("steps", JSONTools.toJSONArray(scenario1Visitor.getNumberedSteps()));
                 break;
             default:
                 break;
