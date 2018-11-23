@@ -15,7 +15,7 @@ public class Scenario {
 
     private String title;
     private List<String> actors;
-    private List<String> systemActors
+    private List<String> systemActors;
     private List<Step> steps;
 
     /**
