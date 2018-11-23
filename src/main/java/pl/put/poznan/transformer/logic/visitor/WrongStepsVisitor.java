@@ -2,6 +2,7 @@ package pl.put.poznan.transformer.logic.visitor;
 
 import pl.put.poznan.transformer.logic.Scenario;
 import pl.put.poznan.transformer.logic.Step;
+import pl.put.poznan.transformer.logic.visitor.stepVisitor.CheckActorVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,9 @@ public class WrongStepsVisitor implements Visitor {
      */
     @Override
     public void visit(Step step) {
-        if (!step.helper.hasInvalidActor(step, actors, systemActors))
+        CheckActorVisitor visitor = new CheckActorVisitor(actors, systemActors);
+        step.accept(visitor);
+        if (!visitor.hasValidActor())
             wrongSteps.add(step.getDescription());
         if (step.getSubsteps() != null)
             for (Step substep: step.getSubsteps()) {
