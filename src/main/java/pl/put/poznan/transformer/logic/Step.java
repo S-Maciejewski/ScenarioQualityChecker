@@ -1,17 +1,17 @@
 package pl.put.poznan.transformer.logic;
 
-import net.minidev.json.JSONArray;
+import pl.put.poznan.transformer.logic.visitor.Visitable;
+import pl.put.poznan.transformer.logic.visitor.Visitor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Przechowuje informacje o kroku scenariusza i jego podkrokach
+ * <p>
+ * Implementuje interfejs Visitable umożliwiając wykonywanie logiki przez inne klasy
  */
-public class Step {
+public class Step implements Visitable {
 
     /**
      * Lista słów kluczowych używanych w krokach scenariusza
@@ -39,13 +39,21 @@ public class Step {
     /**
      * Zwraca opis kroku scenariusza
      */
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     /**
      * Zwraca listę podkroków scenariusza
      */
-    List<Step> getSubsteps() { return substeps; }
+    public List<Step> getSubsteps() { return substeps; }
 
+    /**
+     * Umożliwia wizytatorom operowanie na instancji klasy
+     * @param visitor Wizytator przetwarzający instancję klasy
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
 }

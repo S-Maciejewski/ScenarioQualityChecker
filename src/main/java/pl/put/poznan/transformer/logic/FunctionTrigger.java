@@ -1,6 +1,8 @@
 package pl.put.poznan.transformer.logic;
 
 import net.minidev.json.JSONObject;
+import pl.put.poznan.transformer.logic.visitor.CountStepsVisitor;
+
 import java.util.ArrayList;
 
 /**
@@ -24,10 +26,14 @@ public class FunctionTrigger {
                         scenario.getSteps(), scenario.getActors(), scenario.getSystemActors())));
                 break;
             case "countSteps":
-                response.put("stepsNumber", scenario.helper.countSteps(scenario.getSteps(), "all steps"));
+                CountStepsVisitor scenarioVisitor = new CountStepsVisitor("all steps");
+                scenario.accept(scenarioVisitor);
+                response.put("stepsNumber", scenarioVisitor.getStepsCounter());
                 break;
             case "countKeyWordSteps":
-                response.put("keywordStepsNumber", scenario.helper.countSteps(scenario.getSteps(), "keyword steps"));
+                scenarioVisitor = new CountStepsVisitor("keyword steps");
+                scenario.accept(scenarioVisitor);
+                response.put("keywordStepsNumber", scenarioVisitor.getStepsCounter());
                 break;
             case "showScenario":
                 response.put("steps", JSONTools.toJSONArray(scenario.helper.getNumberedScenario(

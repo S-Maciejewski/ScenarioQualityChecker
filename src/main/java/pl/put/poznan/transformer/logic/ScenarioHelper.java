@@ -32,30 +32,6 @@ public class ScenarioHelper {
 
 
     /**
-     * Zwraca liczbę kroków scenariusza, określonych przez parametr mode
-     * @param steps lista kroków scenariusza
-     * @param mode rodzaj zliczanych kroków:
-     *             "all steps" - zliczanie wszystkich kroków,
-     *             "keyword steps" - zliczanie kroków zaczynających się od słowa kluczowego
-     * @return Liczba kroków danego typu w scenariuszu
-     */
-    public int countSteps(List<Step> steps, String mode) {
-        int counter = 0;
-        if (!steps.isEmpty())
-            for (Step step : steps) {
-                if (mode.equals("all steps"))
-                    counter += 1;
-                else if (mode.equals("keyword steps"))
-                    if (step.helper.startsWithKeyword(step.getDescription()))
-                        counter += 1;
-                if (step.getSubsteps() != null)
-                    counter += countSteps(step.getSubsteps(), mode);
-            }
-        return counter;
-    }
-
-
-    /**
      * Metoda zwraca listę ponumerowanych kroków scenariusza
      * do zadanej głębokości, uwzględniając zagnieżdżenia. <p>
      * W przypadku maksymalnej głębokości przeszukiwania

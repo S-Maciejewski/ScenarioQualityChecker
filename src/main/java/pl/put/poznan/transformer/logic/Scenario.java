@@ -1,17 +1,19 @@
 package pl.put.poznan.transformer.logic;
-import java.util.ArrayList;
-import net.minidev.json.JSONArray;
+
 import net.minidev.json.JSONObject;
+import pl.put.poznan.transformer.logic.visitor.Visitable;
+import pl.put.poznan.transformer.logic.visitor.Visitor;
 import java.util.List;
 
 /**
- * Reprezentuje scenariusz działań wysłany przez użytkownika
- * i udostępnia zbiór metod w celu jego przetwarzania
+ * Reprezentuje scenariusz działań wysłany przez użytkownika.
+ * <p>
+ * Implementuje interfejs Visitable umożliwiając wykonywanie logiki przez inne klasy
  * @author Jan Techner
  * @version 4.0
  * @since 2018-10-31
  */
-public class Scenario {
+public class Scenario implements Visitable {
 
     private String title;
     private List<String> actors;
@@ -54,7 +56,17 @@ public class Scenario {
     /**
      * Metoda zwraca listę kroków scenariusza
      */
-    List<Step> getSteps() {
+    public List<Step> getSteps() {
         return steps;
+    }
+
+
+    /**
+     * Umożliwia wizytatorom operowanie na instancji klasy
+     * @param visitor Wizytator przetwarzający instancję klasy
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }
