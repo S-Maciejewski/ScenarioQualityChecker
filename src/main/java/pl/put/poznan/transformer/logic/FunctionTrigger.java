@@ -1,7 +1,6 @@
 package pl.put.poznan.transformer.logic;
 
 import net.minidev.json.JSONObject;
-
 import java.util.ArrayList;
 
 /**
