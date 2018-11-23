@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Klasa "JSONTools" zawierająca metody przetwarzające i
- * odczytujące obiekty w formacie JSON
+ * Zawierająca metody przetwarzające i odczytujące obiekty w formacie JSON
  */
-class JSONTools {
+public class JSONTools {
 
     /**
-     * Metoda zwraca listę wartości z wybranej właściwości pliku w formacie JSON
-     * @param obj Plik w formacie JSON, którego właściwość ma zostać odczytana
-     * @param field Nazwa właściwości, której wartości mają zostać odczytane
+     * Zwraca listę wartości z wybranej właściwości pliku w formacie JSON
+     * @param obj plik w formacie JSON, którego właściwość ma zostać odczytana
+     * @param field nazwa właściwości
      * @return Lista wartości kolekcji
      */
-    static List<String> getProperty(JSONObject obj, String field) {
+    public static List<String> getProperty(JSONObject obj, String field) {
         List<String> list = new ArrayList<>();
         Object propertyValue = obj.get(field);
         if (propertyValue instanceof String)
@@ -31,21 +30,21 @@ class JSONTools {
 
 
     /**
-     * Metoda zwraca kroki jako listę obiektów
-     * @param scenario Scenariusz, z którego odczytywane są kroki
-     * @return Lista obiektów, zawierających kroki lub listy kroków
+     * Zwraca kroki jako listę obiektów
+     * @param scenario scenariusz, z którego odczytywane są kroki
+     * @return Lista obiektów, zawierających kroki i/lub listy kroków
      */
-    static List<Object> getObjectsList(JSONObject scenario, String field) {
-        return new ArrayList<Object>((ArrayList) scenario.get(field));
+    public static List<Object> getObjectsList(JSONObject scenario) {
+        return new ArrayList<Object>((ArrayList) scenario.get("steps"));
     }
 
 
     /**
-     * Metoda zwraca rekursyjnie kroki scenariusza
-     * @param steps Lista kroków i list kroków do przetworzenia
+     * Odczytuje rekursywnie kroki scenariusza
+     * @param steps lista kroków do przetworzenia
      * @return Zagnieżdżona lista kroków
      */
-    static List<Step> getStepsRecursively(List<Object> steps) {
+    public static List<Step> getStepsRecursively(List<Object> steps) {
         List<Step> steplist = new ArrayList<>();
         for (int i=0; i<steps.size(); i++)
             if (steps.get(i) instanceof String) {
@@ -68,11 +67,11 @@ class JSONTools {
 
 
     /**
-     * Metoda konwertująca listę obiektów na listę formacie JSON
-     * @param list Lista obiektów do skonwertowania
-     * @return JSONArray Lista w formacie JSON
+     * Konwertuje listę obiektów na listę w formacie JSON
+     * @param list lista obiektów do skonwertowania
+     * @return Lista w formacie JSON
      */
-    static JSONArray toJSONArray(List<?> list) {
+    public static JSONArray toJSONArray(List<?> list) {
         JSONArray jsonArray = new JSONArray();
         for (Object obj: list) {
             if (obj instanceof Step)

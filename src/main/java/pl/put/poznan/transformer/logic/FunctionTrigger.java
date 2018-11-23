@@ -1,22 +1,20 @@
 package pl.put.poznan.transformer.logic;
 
-import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
- * Klasa "FunctionTrigger" uruchamia wybraną
- * przez użytkownika funkcję przetwarzającą
+ * Uruchamia wybraną funkcję przetwarzającą scenariusz
  */
 public class FunctionTrigger {
 
     /**
-     * Metoda uruchamia wybraną funkcję przetwarzającą i zwraca właściwość utworzoną wybraną funkcją
-     * @param scenario Scenariusz, na którym ma zostać wywołana wybrana funkcja
-     * @param function Nazwa wybranej funkcji
-     * @param intParam Dodatkowy parametr liczbowy
-     * @return JSONObject Wynik wybranej funkcji jako obiekt w formacie JSON
+     * Uruchamia wybraną funkcję przetwarzającą i zwraca właściwość utworzoną wybraną funkcją
+     * @param scenario scenariusz, na którym ma zostać wywołana wybrana funkcja
+     * @param function nazwa wybranej funkcji
+     * @param intParam dodatkowy parametr liczbowy
+     * @return Wynik wybranej funkcji jako właściwość w formacie JSON
      */
     public static JSONObject run(Scenario scenario, String function, int intParam) {
         JSONObject response = new JSONObject();

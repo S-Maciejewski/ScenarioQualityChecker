@@ -4,70 +4,51 @@ import net.minidev.json.JSONObject;
 import java.util.List;
 
 /**
- * Klasa "Scenario"
+ * Przechowuje informacje o scenariuszu
  */
 public class Scenario {
-
-    private JSONObject scenario;
 
     private String title;
     private List<String> actors;
     private List<String> systemActors;
-
     private List<Step> steps;
 
-    ScenarioHelper helper = new ScenarioHelper();
+    /**
+     * Pozwala na wykorzystanie metod przetwarzania scenariusza
+     */
+    public ScenarioHelper helper = new ScenarioHelper();
+
 
     /**
-     * Konstruktor klasy "Scenario"
-     * @param sendscenario Scenariusz w formacie JSON wysłany przez użytkownika
+     * Konstruktor klasy Scenario
+     * @param sendscenario Scenariusz w formacie JSON
      */
     public Scenario(JSONObject sendscenario) {
-        this.scenario = sendscenario;
         this.title = sendscenario.getAsString("title");
-        this.actors = JSONTools.getProperty(scenario, "actors");
-        this.systemActors = JSONTools.getProperty(scenario, "system_actors");
-        this.steps = JSONTools.getStepsRecursively(JSONTools.getObjectsList(scenario, "steps"));
+        this.actors = JSONTools.getProperty(sendscenario, "actors");
+        this.systemActors = JSONTools.getProperty(sendscenario, "system_actors");
+        this.steps = JSONTools.getStepsRecursively(JSONTools.getObjectsList(sendscenario));
     }
 
 
     /**
-     * Metoda zwraca scenariusz
-     * @return Sceariusz
+     * Metoda zwraca listę aktorów scenariusza
      */
-    public JSONObject getScenario() {
-        return scenario;
-    }
-
-    /**
-     * Metoda zwraca tytuł scenariusza
-     * @return Tytuł scenariusza
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Metoda zwraca listę aktorów
-     * @return Lista aktorów
-     */
-    public List<String> getActors() {
+    List<String> getActors() {
         return actors;
     }
 
     /***
-     * Metoda zwraca liczbę aktorów systemowych
-     * @return Lista aktorów systemowych
+     * Metoda zwraca liczbę aktorów systemowych scenariusza
      */
-    public List<String> getSystemActors() {
+    List<String> getSystemActors() {
         return systemActors;
     }
 
     /**
-     * Metoda zwraca listę etapów
-     * @return Lista etapów
+     * Metoda zwraca listę kroków scenariusza
      */
-    public List<Step> getSteps() {
+    List<Step> getSteps() {
         return steps;
     }
 }

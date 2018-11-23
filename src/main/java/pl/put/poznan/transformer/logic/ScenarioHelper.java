@@ -1,24 +1,21 @@
 package pl.put.poznan.transformer.logic;
 
-import net.minidev.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Klasa "ScenarioHelper" zawiera metody używane do przetwarzania scenariusza
+ * Zawiera metody służące do przetwarzania scenariusza
  */
-class ScenarioHelper {
+public class ScenarioHelper {
 
     /**
-     * Metoda zwraca kroki, które nie zaczynają się od aktora lub aktora systemowego
-     * @param steps Lista kroków, w której będą szukane błędne kroki
-     * @param actors Lista poprawnych aktorów
-     * @param systemActors Lista poprawnych aktorów systemowych
-     * @return List<Step> Lista błędnych kroków
+     * Zwraca listę kroków scenariusza, które nie zaczynają się od aktora lub aktora systemowego
+     * @param steps lista kroków scenariusza, w której będą szukane błędne kroki
+     * @param actors lista poprawnych aktorów
+     * @param systemActors lista poprawnych aktorów systemowych
+     * @return Lista błędnych kroków
      */
-    List<Step> stepsWithInvalidActor(List<Step> steps, List<String> actors, List<String> systemActors) {
+    public List<Step> stepsWithInvalidActor(List<Step> steps, List<String> actors, List<String> systemActors) {
         List<Step> wrongSteps = new ArrayList<>();
         if (!steps.isEmpty())
             for (Step step : steps) {
@@ -35,13 +32,14 @@ class ScenarioHelper {
 
 
     /**
-     * Metoda zwraca rekurencyjnie liczbę kroków
-     * scenariusza, określonych przez parametr 'mode'
-     * @param steps Lista podkroków scenariusza
-     * @param mode Rodzaj zliczanych kroków: "all steps" lub "keyword steps"
-     * @return int Liczba określonych kroków w scenariuszu
+     * Zwraca liczbę kroków scenariusza, określonych przez parametr mode
+     * @param steps lista kroków scenariusza
+     * @param mode rodzaj zliczanych kroków:
+     *             "all steps" - zliczanie wszystkich kroków,
+     *             "keyword steps" - zliczanie kroków zaczynających się od słowa kluczowego
+     * @return Liczba kroków danego typu w scenariuszu
      */
-    int countSteps(List<Step> steps, String mode) {
+    public int countSteps(List<Step> steps, String mode) {
         int counter = 0;
         if (!steps.isEmpty())
             for (Step step : steps) {
@@ -59,15 +57,16 @@ class ScenarioHelper {
 
     /**
      * Metoda zwraca listę ponumerowanych kroków scenariusza
-     * do zadanej głębokości, uwzględniając zagnieżdżenia
+     * do zadanej głębokości, uwzględniając zagnieżdżenia. <p>
      * W przypadku maksymalnej głębokości przeszukiwania
-     * równej 0, zwracane są wszystkie kroki scenariusza
-     * @param steps Lista kroków scenariusza
-     * @param maxdepth Maksymalny poziom zagłębienia
-     * @param currentNumbers Lista aktualnych numerów zagnieżdżenia
-     * @return List<String> Lista ponumerowanych kroków scenariusza
+     * równej 0, zwracane są wszystkie kroki scenariusza.
+     * @param steps lista kroków scenariusza
+     * @param maxdepth maksymalny poziom zagnieżdżenia
+     * @param currentNumbers lista aktualnych numerów kroku i nadkroków,
+     *                       początkowo powinna być pusta
+     * @return Lista ponumerowanych kroków scenariusza
      */
-    List<String> getNumberedScenario(List<Step> steps, int maxdepth, List<String> currentNumbers) {
+    public List<String> getNumberedScenario(List<Step> steps, int maxdepth, List<String> currentNumbers) {
         List<String> numberedScenario = new ArrayList<>();
         if (!steps.isEmpty()) {
             if (currentNumbers.size() < maxdepth || maxdepth == 0) {

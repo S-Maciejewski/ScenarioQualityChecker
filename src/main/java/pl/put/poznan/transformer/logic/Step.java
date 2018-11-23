@@ -9,58 +9,43 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Klasa "Step"
+ * Przechowuje informacje o kroku scenariusza i jego podkrokach
  */
-
 public class Step {
 
+    /**
+     * Lista słów kluczowych używanych w krokach scenariusza
+     */
     public static List<String> KEYWORDS = Arrays.asList("ELSE:", "FOR EACH", "IF:");
     private List<Step> substeps;
     private String description;
+
+    /**
+     * Pozwala na wykorzystanie metod przetwarzania kroku scenariusza
+     */
     public StepHelper helper;
 
     /**
-     * Konstruktor klasy "Step"
-     * @param description Opis kroku scenariusza
-     * @param substeps Lista podkroków kroku scenariusza
+     * Konstruktor klasy Step
+     * @param description opis kroku scenariusza
+     * @param substeps lista podkroków kroku scenariusza
      */
-    Step(String description, List<Step> substeps) {
+    public Step(String description, List<Step> substeps) {
         this.substeps = substeps;
         this.description = description;
     }
 
 
     /**
-     * Metoda zwraca opis kroku scenariusza
-     * @return Opis kroku scenariusza
+     * Zwraca opis kroku scenariusza
      */
     String getDescription() {
         return description;
     }
 
-
     /**
-     * Metoda zwraca listę podkroków scenariusza
-     * @return Lista podkroków scenariusza
+     * Zwraca listę podkroków scenariusza
      */
     List<Step> getSubsteps() { return substeps; }
 
-
-    /**
-     * Tworzy listę ponumerowanych scenariuszy do zadanej głębokości
-     * @param numberedScenario Kolekcja numerowanych scenariuszy
-     * @param maxdepth Maksymalna głębokość
-     * @param currentNumbers Aktualna głębokość
-     */
-    public void getNumberedScenario(JSONArray numberedScenario, int maxdepth, List<String> currentNumbers) {
-        if (maxdepth >= currentNumbers.size() || maxdepth == 0) {
-            numberedScenario.add(String.join(".", currentNumbers) + ". " + this.description);
-            if (this.substeps != null)
-                for (int i = 0; i < this.substeps.size(); i++) {
-                    currentNumbers.add(currentNumbers.size(), Integer.toString(i+1));
-                    this.substeps.get(i).getNumberedScenario(numberedScenario, maxdepth, currentNumbers);
-                    currentNumbers.remove(currentNumbers.size() - 1);
-                }
-        }
-    }
 }

@@ -5,19 +5,19 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Klasa "StepHelper" zawiera metody służące
- * do przetwarzania kroków scenariusza
+ * Zawiera metody służące do przetwarzania kroku scenariusza
  */
 public class StepHelper {
 
     /**
-     * Metoda sprawdza, czy krok scenariusza zaczyna się od niepoprawnego aktora
-     * @param step Krok, którego popraność jest sprawdzana
-     * @param actors Lista poprawnych aktorów scenariusza
-     * @param systemActors Lista poprawnych aktorów systemowych scenariusza
-     * @return Prawda, w przypadku, gdy krok nie zaczyna się od poprawnego aktora, fałsz w przeciwnym
+     * Sprawdza, czy krok scenariusza zaczyna się od niepoprawnego aktora
+     * @param step sprawdzany krok
+     * @param actors lista poprawnych aktorów scenariusza
+     * @param systemActors lista poprawnych aktorów systemowych scenariusza
+     * @return Prawda, w przypadku, gdy krok nie zaczyna się od poprawnego aktora,
+     *         fałsz w przypadku przeciwnym
      */
-    static boolean hasInvalidActor(Step step, List<String> actors,List<String> systemActors) {
+    public boolean hasInvalidActor(Step step, List<String> actors,List<String> systemActors) {
         String description = step.getDescription();
         if (description.startsWith("ELSE:") || description.startsWith("FOR EACH:"))
             return true;
@@ -37,11 +37,11 @@ public class StepHelper {
 
 
     /**
-     * Metoda sprawdza, czy opis kroku zaczyna się od słowa kluczowego
-     * @param description Opis kroku scenariusza
-     * @return boolean Informacja o tym, czy opis kroku zaczyna się od słowa kluczowego
+     * Sprawdza, czy opis kroku zaczyna się od słowa kluczowego
+     * @param description opis kroku scenariusza
+     * @return Informacja o tym, czy opis kroku zaczyna się od słowa kluczowego
      */
-    static boolean startsWithKeyword(String description) {
+    public boolean startsWithKeyword(String description) {
         for (String keyword : Step.KEYWORDS)
             if (description.startsWith(keyword))
                 return true;
