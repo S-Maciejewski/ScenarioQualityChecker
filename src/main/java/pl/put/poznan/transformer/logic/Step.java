@@ -2,8 +2,6 @@ package pl.put.poznan.transformer.logic;
 
 import pl.put.poznan.transformer.logic.visitor.Visitable;
 import pl.put.poznan.transformer.logic.visitor.Visitor;
-
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,17 +11,9 @@ import java.util.List;
  */
 public class Step implements Visitable {
 
-    /**
-     * Lista słów kluczowych używanych w krokach scenariusza
-     */
-    public static List<String> KEYWORDS = Arrays.asList("ELSE:", "FOR EACH", "IF:");
     private List<Step> substeps;
     private String description;
 
-    /**
-     * Pozwala na wykorzystanie metod przetwarzania kroku scenariusza
-     */
-    public StepHelper helper = new StepHelper();
 
     /**
      * Konstruktor klasy Step

@@ -2,6 +2,7 @@ package pl.put.poznan.transformer.logic.visitor;
 
 import pl.put.poznan.transformer.logic.Scenario;
 import pl.put.poznan.transformer.logic.Step;
+import pl.put.poznan.transformer.logic.visitor.stepVisitor.CheckKeywordVisitor;
 import java.util.List;
 
 /**
@@ -58,9 +59,12 @@ public class CountStepsVisitor implements Visitor {
     public void visit(Step step) {
         if (mode.equals("all steps"))
             stepsCounter += 1;
-        else if (mode.equals("keyword steps"))
-            if (step.helper.startsWithKeyword(step.getDescription()))
+        else if (mode.equals("keyword steps")) {
+            CheckKeywordVisitor visitor = new CheckKeywordVisitor();
+            step.accept(visitor);
+            if (visitor.startsWithKeyword())
                 stepsCounter += 1;
+        }
         if (step.getSubsteps() != null)
             for (Step substep : step.getSubsteps()) {
                 CountStepsVisitor substepsVisitor = new CountStepsVisitor(mode);

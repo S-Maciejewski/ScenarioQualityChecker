@@ -5,9 +5,6 @@ import pl.put.poznan.transformer.logic.visitor.CountStepsVisitor;
 import pl.put.poznan.transformer.logic.visitor.NumberStepsVisitor;
 import pl.put.poznan.transformer.logic.visitor.WrongStepsVisitor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Uruchamia wybraną funkcję przetwarzającą scenariusz
  */
