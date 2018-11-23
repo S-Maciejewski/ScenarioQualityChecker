@@ -3,6 +3,7 @@ package pl.put.poznan.transformer.logic;
 import net.minidev.json.JSONObject;
 import pl.put.poznan.transformer.logic.visitor.CountStepsVisitor;
 import pl.put.poznan.transformer.logic.visitor.NumberStepsVisitor;
+import pl.put.poznan.transformer.logic.visitor.WrongStepsVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,9 @@ public class FunctionTrigger {
         JSONObject response = new JSONObject();
         switch (function) {
             case "wrongSteps":
-                response.put("wrongSteps", JSONTools.toJSONArray(scenario.helper.stepsWithInvalidActor(
-                        scenario.getSteps(), scenario.getActors(), scenario.getSystemActors())));
+                WrongStepsVisitor sVisitor = new WrongStepsVisitor(scenario.getActors(), scenario.getSystemActors());
+                scenario.accept(sVisitor);
+                response.put("wrongSteps", JSONTools.toJSONArray(sVisitor.getWrongSteps()));
                 break;
             case "countSteps":
                 CountStepsVisitor scenarioVisitor = new CountStepsVisitor("all steps");

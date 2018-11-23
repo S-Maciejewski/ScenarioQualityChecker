@@ -21,12 +21,6 @@ public class Scenario implements Visitable {
     private List<Step> steps;
 
     /**
-     * Pozwala na wykorzystanie metod przetwarzania scenariusza
-     */
-    public ScenarioHelper helper = new ScenarioHelper();
-
-
-    /**
      * Przetwarza wysłany scenariusz i wyodrębnia elementy takie jak
      * tytuł scenariusza, aktorów i listę kroków
      * @param sendscenario Scenariusz w formacie JSON
