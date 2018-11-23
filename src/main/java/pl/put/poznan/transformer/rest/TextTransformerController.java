@@ -3,6 +3,7 @@ import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import pl.put.poznan.transformer.logic.FunctionTrigger;
 import pl.put.poznan.transformer.logic.Scenario;
 
 @RestController
@@ -20,7 +21,7 @@ public class TextTransformerController {
         // running logic here
         Scenario scenario = new Scenario(sendedScenario);
 
-        return scenario.triggerFunction(function, 0);
+        return FunctionTrigger.run(scenario, function, 0);
     }
 
     @RequestMapping(path = "/showScenario/{maxDepth}", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
@@ -33,7 +34,7 @@ public class TextTransformerController {
         // running logic here
         Scenario scenario = new Scenario(sendedScenario);
 
-        return scenario.triggerFunction("showScenarioWithMaxDepth", maxDepth);
+        return FunctionTrigger.run(scenario, "showScenarioWithMaxDepth", maxDepth);
     }
 }
 

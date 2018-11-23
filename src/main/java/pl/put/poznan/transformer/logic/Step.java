@@ -2,146 +2,50 @@ package pl.put.poznan.transformer.logic;
 
 import net.minidev.json.JSONArray;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Klasa "Step"
+ * Przechowuje informacje o kroku scenariusza i jego podkrokach
  */
-
 public class Step {
 
+    /**
+     * Lista słów kluczowych używanych w krokach scenariusza
+     */
+    public static List<String> KEYWORDS = Arrays.asList("ELSE:", "FOR EACH", "IF:");
     private List<Step> substeps;
     private String description;
 
     /**
-     * Konstruuje obiekt klasy "Step"
-     * @param description Opis obiektu (etapu)
-     * @param substeps Lista "substeps" (podetapów)
+     * Pozwala na wykorzystanie metod przetwarzania kroku scenariusza
+     */
+    public StepHelper helper = new StepHelper();
+
+    /**
+     * Konstruktor klasy Step
+     * @param description opis kroku scenariusza
+     * @param substeps lista podkroków kroku scenariusza
      */
     public Step(String description, List<Step> substeps) {
         this.substeps = substeps;
         this.description = description;
     }
 
+
     /**
-     * Zwraca opis etapu
-     * @return opis etapu
+     * Zwraca opis kroku scenariusza
      */
-    public String getDescription() {
+    String getDescription() {
         return description;
     }
 
     /**
-     * Metoda sprawdza, czy opis etapu zaczyna się od aktora lub aktora systemowego;
-     * usuwa początkowy "IF:";
-     * jeśli wynik nie spełnia warunku, dodaje etap do listy "wrongSteps";
-     * Następnie wywołuje metodę {@link #checkSubstepsSWA(List, List, List)}
-     * @param wrongSteps Lista niepoprawnych opisów etapów
-     * @param actors Lista aktorów
-     * @param systemActors Lista aktorów systemowych
+     * Zwraca listę podkroków scenariusza
      */
-    public void startsWithActor(List<Step> wrongSteps, List<String> actors, List<String> systemActors) {
-        if(!(description.startsWith("ELSE:") || description.startsWith("FOR EACH:"))) {
-            description = (description.replaceAll("IF:", "")).trim();
-            Boolean correct = false;
-            if(actors != null){
-                for (String actor : actors) {
-                    if(description.startsWith(actor)) {
-                        correct = true;
-                        break;
-                    }
-                }
-            }
-            if(!correct && systemActors != null){
-                for (String systemActor : systemActors) {
-                    if(description.startsWith(systemActor)) {
-                        correct = true;
-                        break;
-                    }
-                }
-            }
-            if(!correct){
-                wrongSteps.add(this);
-            }
-        }
-        checkSubstepsSWA(wrongSteps, actors, systemActors);
-    }
+    List<Step> getSubsteps() { return substeps; }
 
-    /**
-     * Metoda wywołuje metodę {@link #startsWithActor(List, List, List)} dla każdego element z listy "substeps"
-     * @param wrongSteps Lista etapów
-     * @param actors Lista aktorów
-     * @param systemActors Lista aktorów systemowych
-     */
-    public void checkSubstepsSWA(List<Step> wrongSteps, List<String> actors, List<String> systemActors) {
-        if(substeps != null) {
-                for (Step step : substeps) {
-                    step.startsWithActor(wrongSteps, actors, systemActors);
-            }
-        }
-    }
-
-    /**
-     * Metoda liczy liczbę podetapów
-     * @param stepsCounter Licznik etapu
-     */
-    void countSteps(AtomicInteger stepsCounter) {
-        if(substeps != null) {
-                for (Step step : substeps) {
-                    step.countSteps(stepsCounter);
-            }
-        }
-        stepsCounter.addAndGet(1);
-    }
-
-    /**
-     * Metoda liczy liczbę słów kluczowych "ELSE:", "FOR EACH", "IF:"
-     * @param stepsCounter Licznik słów kluczowych
-     */
-    void countKeyWordSteps(AtomicInteger stepsCounter) {
-        if(substeps != null) {
-            for (Step step : substeps) {
-                step.countKeyWordSteps(stepsCounter);
-            }
-        }
-        if(description.startsWith("ELSE:") || description.startsWith("FOR EACH") || description.startsWith("IF:")) {
-            stepsCounter.addAndGet(1);
-        }
-    }
-
-    /**
-     * Tworzy listę ponumerowanych scenariuszy do zadanej głębokości
-     * @param numberedScenario Kolekcja numerowanych scenariuszy
-     * @param maxdepth Maksymalna głębokość
-     * @param currentNumbers Aktualna głębokość
-     */
-    public void getNumberedScenario(JSONArray numberedScenario, int maxdepth, List<String> currentNumbers) {
-        if (maxdepth >= currentNumbers.size() || maxdepth == 0) {
-            numberedScenario.add(String.join(".", currentNumbers) + ". " + this.description);
-            if (this.substeps != null) {
-                for (int i = 0; i < this.substeps.size(); i++) {
-                    currentNumbers.add(currentNumbers.size(), Integer.toString(i+1) );
-                    this.substeps.get(i).getNumberedScenario(numberedScenario, maxdepth, currentNumbers);
-                    currentNumbers.remove(currentNumbers.size() - 1);
-                }
-            }
-        }
-    }
-
-    /**
-     * Hierarchinczny podgląd wszystkich kroków
-     * @param prefix Prefix
-     */
-    //prefix pozwala na hierarchiczny podgląd wszystkich kroków - domyślnie ""
-    public void showRecursively(String prefix) {
-        prefix += "  ";
-        System.out.println(prefix + this.description);
-        if (this.substeps != null) {
-            for (Step s: this.substeps) {
-                s.showRecursively(prefix);
-            }
-        }
-    }
 }
