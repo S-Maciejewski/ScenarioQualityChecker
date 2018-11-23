@@ -2,8 +2,10 @@ package pl.put.poznan.transformer.logic;
 
 import net.minidev.json.JSONObject;
 import pl.put.poznan.transformer.logic.visitor.CountStepsVisitor;
+import pl.put.poznan.transformer.logic.visitor.NumberStepsVisitor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Uruchamia wybraną funkcję przetwarzającą scenariusz
@@ -19,7 +21,6 @@ public class FunctionTrigger {
      */
     public static JSONObject run(Scenario scenario, String function, int intParam) {
         JSONObject response = new JSONObject();
-
         switch (function) {
             case "wrongSteps":
                 response.put("wrongSteps", JSONTools.toJSONArray(scenario.helper.stepsWithInvalidActor(
@@ -36,12 +37,14 @@ public class FunctionTrigger {
                 response.put("keywordStepsNumber", scenarioVisitor.getStepsCounter());
                 break;
             case "showScenario":
-                response.put("steps", JSONTools.toJSONArray(scenario.helper.getNumberedScenario(
-                        scenario.getSteps(), 0, new ArrayList<>())));
+                NumberStepsVisitor scenario1Visitor = new NumberStepsVisitor(0);
+                scenario.accept(scenario1Visitor);
+                response.put("steps", JSONTools.toJSONArray(scenario1Visitor.getNumberedSteps()));
                 break;
             case "showScenarioWithMaxDepth":
-                response.put("steps", JSONTools.toJSONArray(scenario.helper.getNumberedScenario(
-                        scenario.getSteps(), intParam, new ArrayList<>())));
+                scenario1Visitor = new NumberStepsVisitor(intParam);
+                scenario.accept(scenario1Visitor);
+                response.put("steps", JSONTools.toJSONArray(scenario1Visitor.getNumberedSteps()));
                 break;
             default:
                 break;

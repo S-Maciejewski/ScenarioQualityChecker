@@ -5,8 +5,6 @@ import pl.put.poznan.transformer.logic.Step;
 import java.util.List;
 
 /**
- * Wizytator klas Scenario i Step
- * <p>
  * Zlicza kroki scenariusza, określone parametrem
  */
 public class CountStepsVisitor implements Visitor {
