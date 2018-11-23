@@ -1,16 +1,21 @@
 package pl.put.poznan.transformer.logic;
-
+import java.util.ArrayList;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import java.util.List;
 
 /**
- * Przechowuje informacje o scenariuszu
+ * Reprezentuje scenariusz działań wysłany przez użytkownika
+ * i udostępnia zbiór metod w celu jego przetwarzania
+ * @author Jan Techner
+ * @version 4.0
+ * @since 2018-10-31
  */
 public class Scenario {
 
     private String title;
     private List<String> actors;
-    private List<String> systemActors;
+    private List<String> systemActors
     private List<Step> steps;
 
     /**
@@ -20,7 +25,8 @@ public class Scenario {
 
 
     /**
-     * Konstruktor klasy Scenario
+     * Przetwarza wysłany scenariusz i wyodrębnia elementy takie jak
+     * tytuł scenariusza, aktorów i listę kroków
      * @param sendscenario Scenariusz w formacie JSON
      */
     public Scenario(JSONObject sendscenario) {

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.transformer.logic.FunctionTrigger;
 import pl.put.poznan.transformer.logic.Scenario;
-import pl.put.poznan.transformer.logic.Step;
 
 @RestController
 public class TextTransformerController {
