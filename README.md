@@ -4,6 +4,8 @@
 
 Projekt **serwera webowego** napisanego w Javie, z użyciem RESTful API i SpringBoot.
 
+Repozytorium z **aplikacją internetową** do obsługi serwera znajduje się [tutaj](https://github.com/S-Maciejewski/SQC-GUI).
+
 Dla analityków dokumentujących wymagania funkcjonalne za pomocą scenariuszy nasza aplikacja SQC dostarczy **informacji ilościowych** oraz umożliwi wykrywanie problemów w wymaganiach funkcjonalnych zapisanych w postaci scenariuszy. Aplikacja dostępna poprzez **GUI** a także jako **zdalne API**, dzięki czemu można ją zintegrować z istniejącymi narzędziami.
 
 - Scenariusz zawiera nagłówek określający jego tytuł i aktorów (zewnętrznych oraz system)
