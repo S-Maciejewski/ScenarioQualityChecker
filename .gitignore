@@ -4,6 +4,9 @@
 # Log file
 *.log
 
+# PDFs
+*.pdf
+
 # BlueJ files
 *.ctxt
 
@@ -25,3 +28,5 @@ hs_err_pid*
 .idea/
 .DS_Store
 target/
+
+/nbproject/
