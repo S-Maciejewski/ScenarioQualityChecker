@@ -4,11 +4,11 @@
 # Log file
 *.log
 
-# PDFs
-*.pdf
-
 # BlueJ files
 *.ctxt
+
+# PDFs
+*.pdf
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
