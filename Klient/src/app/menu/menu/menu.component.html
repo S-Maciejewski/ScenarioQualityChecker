@@ -1,0 +1,20 @@
+<mat-drawer-container class="drawerContainer">
+    <mat-drawer #drawer mode="over" [(opened)]="drawerOpened">
+        <mat-card>
+            <mat-card-title>Scenario input</mat-card-title>
+        </mat-card>
+        <textarea [(ngModel)]="input" class="input" matInput placeholder="Place your scenario here" rows="42" wrap="off"></textarea>
+        <button class="closeDrawerButton" mat-button (click)="toggleDrawer()">Close drawer</button>
+    </mat-drawer>
+    <mat-drawer-content>
+      <mat-card>
+        <mat-card-title>Scenario Quality Checker</mat-card-title>
+        <app-scenario></app-scenario>
+        <app-depth-scenario></app-depth-scenario>
+        <app-step-count></app-step-count>
+      </mat-card>
+      <button class="drawerButton" mat-button (click)="toggleDrawer()">Toogle scenario input</button>
+    </mat-drawer-content>
+</mat-drawer-container>
+
+

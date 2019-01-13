@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-title>Scenario steps and keywords count</mat-card-title>
+  <textarea [(ngModel)]="countOutput" class="countOutput" matInput placeholder="Scenario steps count" rows="1" wrap="off" readonly></textarea>
+  <button class="countButton" mat-button (click)="getStepsCount()">Get steps count</button>
+
+  <textarea [(ngModel)]="wrongCountOutput" class="wrongCountOutput" matInput placeholder="Wrong scenario steps count" rows="1" wrap="off" readonly></textarea>
+  <button class="wrongCountButton" mat-button (click)="getWrongStepsCount()">Get wrong steps count</button>
+
+  <textarea [(ngModel)]="keywordCountOutput" class="keywordCountOutput" matInput placeholder="Scenario keywords count" rows="1" wrap="off" readonly></textarea>
+  <button class="keywordCountButton" mat-button (click)="getKeywordCount()">Get keyword count</button>
+</mat-card>

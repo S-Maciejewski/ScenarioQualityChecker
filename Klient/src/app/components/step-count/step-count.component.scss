@@ -1,0 +1,31 @@
+@import '../../../variables.scss';
+
+mat-card{
+    background-color: $secondary-background;
+    margin-bottom: 20px;
+}
+
+.countOutput{
+    width: 15%;
+    resize: none;
+}
+
+button{
+    position: absolute;
+    top: 48%;
+    margin-left: 1%;
+    background-color: $main-color;
+    color: white;
+}
+
+.wrongCountOutput{
+    width: 15%;
+    resize: none;
+    margin-left: 20%;
+}
+
+.keywordCountOutput{
+    width: 15%;
+    resize: none;
+    margin-left: 20%;
+}

@@ -1,0 +1,5 @@
+<mat-card>
+  <mat-card-title>Scenario steps</mat-card-title>
+  <textarea [(ngModel)]="output" class="output" matInput placeholder="Scenario steps" rows="15" wrap="on" readonly></textarea>
+  <button class="getSteps" mat-button (click)="getSteps()">Get scenario steps</button>
+</mat-card>

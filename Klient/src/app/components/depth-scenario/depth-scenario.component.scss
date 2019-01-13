@@ -1,0 +1,23 @@
+@import '../../../variables.scss';
+
+textarea{
+    width: 90%;
+    resize: none;
+}
+button{
+    position: absolute;
+    top: 46%;
+    margin-left: 1%;
+    background-color: $main-color;
+    color: white;
+}
+mat-card{
+    background-color: $secondary-background;
+    margin-bottom: 20px;
+}
+.input{
+    position: absolute;
+    top: 60%;
+    margin-left: 1%;
+    width: 5%;
+}
