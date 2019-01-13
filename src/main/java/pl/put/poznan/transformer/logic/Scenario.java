@@ -38,6 +38,12 @@ public class Scenario implements Visitable {
         this.steps = JSONTools.getStepsRecursively(JSONTools.getObjectsList(sendscenario));
     }
 
+    public Scenario(String title, List<String> actors, List<String> systemActors, List<Step> steps) {
+        this.title = title;
+        this.actors = actors;
+        this.systemActors = systemActors;
+        this.steps = steps;
+    }
 
     /**
      * Metoda zwraca listę aktorów scenariusza
