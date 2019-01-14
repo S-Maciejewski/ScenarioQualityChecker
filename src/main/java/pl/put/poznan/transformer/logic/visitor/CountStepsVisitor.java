@@ -62,8 +62,9 @@ public class CountStepsVisitor implements Visitor {
         else if (mode.equals("keyword steps")) {
             CheckKeywordVisitor visitor = new CheckKeywordVisitor();
             step.accept(visitor);
-            if (visitor.startsWithKeyword())
+            if (visitor.startsWithKeyword()) {
                 stepsCounter += 1;
+            }
         }
         if (step.getSubsteps() != null)
             for (Step substep : step.getSubsteps()) {

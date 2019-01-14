@@ -1,11 +1,16 @@
 package pl.put.poznan.transformer.logic.visitor;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import pl.put.poznan.transformer.logic.Scenario;
 import pl.put.poznan.transformer.logic.Step;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CountStepsVisitorTest {
 
@@ -115,5 +120,79 @@ public class CountStepsVisitorTest {
         int expResult = 6;
         int result = instance.getStepsCounter();
         assertEquals(expResult, result);
+    }
+
+    @Test
+    public void test_mock1() {
+        Step mockObj = mock(Step.class);
+        List<Step> steps = null;
+        when(mockObj.getSubsteps()).thenReturn(steps);
+        when(mockObj.getDescription()).thenReturn("description");
+        CountStepsVisitor testObj = new CountStepsVisitor("all steps");
+        testObj.visit(mockObj);
+        assertEquals(1, testObj.getStepsCounter());
+    }
+
+    @Test
+    public void test_mock2() {
+        Step mockObj = mock(Step.class);
+        List<Step> steps = new ArrayList<>(
+                Arrays.asList(new Step("description1", null), new Step("description2", new ArrayList<>(
+                        Arrays.asList(new Step("description3", null))))));
+        when(mockObj.getSubsteps()).thenReturn(steps);
+        when(mockObj.getDescription()).thenReturn("description");
+        CountStepsVisitor testObj = new CountStepsVisitor("all steps");
+        testObj.visit(mockObj);
+        assertEquals(4, testObj.getStepsCounter());
+    }
+
+    @Test
+    public void test_mock3() {
+        Step mockObj = mock(Step.class);
+        when(mockObj.getDescription()).thenReturn("description");
+        when(mockObj.getSubsteps()).thenReturn(null);
+        CountStepsVisitor testObj = new CountStepsVisitor("keyword steps");
+        testObj.visit(mockObj);
+        assertEquals(0, testObj.getStepsCounter());
+    }
+
+
+    @Test
+    public void test_mock4() {
+        Step mockObj = mock(Step.class);
+        when(mockObj.getDescription()).thenReturn("description");
+        List<Step> steps = new ArrayList<>(
+                Arrays.asList(new Step("FOR EACH: description1", null), new Step("ELSE: description2", new ArrayList<>(
+                        Arrays.asList(new Step("IF: description3", null))))));
+        when(mockObj.getSubsteps()).thenReturn(steps);
+        CountStepsVisitor testObj = new CountStepsVisitor("keyword steps");
+        testObj.visit(mockObj);
+        assertEquals(3, testObj.getStepsCounter());
+    }
+
+    @Test
+    public void test_mock5() {
+        Step mockObj = mock(Step.class);
+        when(mockObj.getDescription()).thenReturn("description");
+        List<Step> steps = new ArrayList<>(
+                Arrays.asList(new Step("IF: description1", null), new Step("ELSE:", new ArrayList<>(
+                        Arrays.asList(new Step("FOREACH: no space", null))))));
+        when(mockObj.getSubsteps()).thenReturn(steps);
+        CountStepsVisitor testObj = new CountStepsVisitor("keyword steps");
+        testObj.visit(mockObj);
+        assertEquals(2, testObj.getStepsCounter());
+    }
+
+    @Test
+    public void test_mock6() {
+        Step mockObj = mock(Step.class);
+        when(mockObj.getDescription()).thenReturn("description");
+        List<Step> steps = new ArrayList<>(
+                Arrays.asList(new Step("FOR EACH: description1", null), new Step("ELSE:", new ArrayList<>(
+                        Arrays.asList(new Step("IF: description3", null), new Step("ELSE with no ':'", null))))));
+        when(mockObj.getSubsteps()).thenReturn(steps);
+        CountStepsVisitor testObj = new CountStepsVisitor("keyword steps");
+        testObj.visit(mockObj);
+        assertEquals(3, testObj.getStepsCounter());
     }
 }
